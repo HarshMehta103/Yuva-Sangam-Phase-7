@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light" />
+<title>Yuva Sangam Phase 7 · Sikkim × Rajasthan · IIT Jodhpur</title>
+<meta name="description" content="Yuva Sangam Phase 7, 2026. A delegation from Sikkim University visits Rajasthan, hosted by IIT Jodhpur, under Ek Bharat Shreshtha Bharat." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   DESIGN TOKENS — light theme only (by request)
+   sky/paper: cool whites, not cream · ink: deep indigo
+   moss = Sikkim (prayer-flag green) · haldi = Rajasthan (turmeric)
+   ===================================================================== */
+:root{
+  --sky:     #F2F5F8;
+  --paper:   #FFFFFF;
+  --ink:     #17223A;
+  --ink-2:   #4E5A70;
+  --ink-3:   #8A93A4;
+  --rule:    #DCE2EA;
+  --moss:    #3C7A5A;
+  --moss-lt: #E4EFE8;
+  --haldi:   #CF8E17;
+  --haldi-lt:#FBF0DA;
+
+  --f-display: 'Instrument Serif', 'Times New Roman', serif;
+  --f-text: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-deva: 'Tiro Devanagari Hindi', 'Noto Serif Devanagari', serif;
+
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+/* Explicit light tokens even when the viewer prefers dark: this site is light-only */
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ color-scheme: light; } }
+:root[data-theme="dark"]{ color-scheme: light; }
+
+*,*::before,*::after{ box-sizing: inherit; }
+html{ height:100%; scroll-padding-top: calc(64px + env(safe-area-inset-top,0px)); }
+body{
+  margin:0; background: var(--sky); color: var(--ink);
+  font-family: var(--f-text); font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+img,svg{ display:block; max-width:100%; }
+a{ color: inherit; }
+p{ margin:0; }
+h1,h2,h3{ margin:0; font-weight:400; }
+button{ font: inherit; color: inherit; }
+:focus-visible{ outline: 2px solid var(--haldi); outline-offset: 3px; border-radius: 4px; }
+.sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+/* =====================================================================
+   LOADER — India outline traced by progress, with a live counter
+   ===================================================================== */
+.loader{
+  position: fixed; inset: 0; z-index: 100; background: var(--paper);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 18px;
+  transition: opacity .6s ease, visibility .6s ease;
+}
+.loader.done{ opacity:0; visibility:hidden; }
+.loader svg{ width: min(46vw, 260px); height:auto; overflow:visible; }
+.loader .trace{ fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1; vector-effect: non-scaling-stroke; }
+.loader .fill-in{ fill: var(--sky); opacity: 0; transition: opacity .5s ease; }
+.loader .dot{ opacity:0; transition: opacity .3s ease; }
+.loader .dot.on{ opacity:1; }
+.loader-count{ font-family: var(--f-display); font-size: clamp(3rem, 9vw, 4.6rem); line-height:1; font-variant-numeric: tabular-nums; }
+.loader-label{ font-size: .88rem; color: var(--ink-2); min-height: 1.4em; }
+
+/* =====================================================================
+   HEADER
+   ===================================================================== */
+.site-head{
+  position: fixed; top:0; left:0; right:0; z-index: 60;
+  padding: calc(14px + env(safe-area-inset-top,0px)) clamp(18px,4vw,44px) 14px;
+  display:flex; align-items:center; justify-content:space-between; gap: 16px;
+  color: #fff; transition: color .35s ease, background .35s ease, box-shadow .35s ease;
+}
+.site-head.on-light{ color: var(--ink); background: rgba(255,255,255,.86); backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--rule); }
+.site-head .mark{ display:flex; align-items:baseline; gap:10px; text-decoration:none; }
+.site-head .mark b{ font-family: var(--f-display); font-weight:400; font-size: 1.35rem; letter-spacing: .01em; }
+.site-head .mark span{ font-size:.82rem; opacity:.8; }
+.head-nav{ display:flex; align-items:center; gap: clamp(10px,2vw,22px); font-size:.92rem; }
+.head-nav a{ text-decoration:none; opacity:.9; }
+.head-nav a:hover{ opacity:1; text-decoration: underline; text-underline-offset: 4px; }
+.pill{
+  display:inline-flex; align-items:center; gap:8px; padding: 9px 16px; border-radius: 999px;
+  border: 1px solid currentColor; text-decoration:none; font-weight:600; font-size:.9rem; white-space:nowrap;
+}
+.pill.solid{ background: var(--ink); color:#fff; border-color: var(--ink); }
+@media (max-width: 560px){ .head-nav .hide-sm{ display:none; } .site-head .mark span{ display:none; } }
+
+/* =====================================================================
+   VIEW SWITCHING (home / schedule in one file; split-ready for hosting)
+   ===================================================================== */
+.view{ display:none; }
+.view.active{ display:block; }
+
+/* =====================================================================
+   SCENE 1 — satellite India → clouds rush in → whiteout → title card
+   ===================================================================== */
+.sky-scene{ position: relative; height: 460vh; }
+.sky-pin{ position: sticky; top:0; height: 100vh; height: 100svh; overflow: hidden; background: #0b2447; }
+.sat{
+  /* Real size/position are set by layoutSat() in JS: India's full extent is
+     fitted between the header and the caption, and the image always covers
+     the screen. These values are only the no-JS fallback. */
+  position:absolute; left:0; top:0; width:100%; height:100%;
+  background-image: url(__SAT__); background-repeat:no-repeat;
+  background-size: cover; background-position: 50% 42%;
+  will-change: transform, filter;
+}
+.sat.fitted{ background-size: 100% 100%; }
+.clouds{ position:absolute; inset:0; pointer-events:none; }
+.cloud{
+  position:absolute; left:0; top:0; will-change: transform, opacity; pointer-events:none;
+  user-select:none; -webkit-user-drag:none;
+}
+.veil{ position:absolute; inset:0; background: #fff; opacity:0; pointer-events:none; }
+/* Royal frame that appears with the title: toran, cusped arch, jaali screens, border */
+.royal{ position:absolute; inset:0; pointer-events:none; opacity:0; }
+.royal-svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+.royal .toran{ position:absolute; left:0; right:0; top: var(--head-h, 62px); transform: translateY(-14px); }
+.royal .toran-svg{ display:block; }
+.arch-line{ fill:none; stroke:#B98A2E; stroke-linejoin:round; stroke-dasharray:1 1; }
+.toran-svg{ display:block; }
+.topscrim{ position:absolute; left:0; right:0; top:0; height: 150px; pointer-events:none; background: linear-gradient(rgba(8,18,36,.45), rgba(8,18,36,0)); }
+.orbit-cap{
+  position:absolute; left: clamp(18px,4vw,44px); bottom: calc(26px + env(safe-area-inset-bottom,0px));
+  color:#fff; max-width: min(88vw, 640px); text-shadow: 0 1px 12px rgba(0,0,0,.45);
+}
+.orbit-cap .big{ font-family: var(--f-display); font-size: clamp(1.9rem, 4.4vw, 3.1rem); line-height:1.05; }
+.orbit-cap .small{ font-size:.82rem; opacity:.85; margin-top:8px; }
+.descend{
+  position:absolute; right: clamp(18px,4vw,44px); bottom: calc(26px + env(safe-area-inset-bottom,0px));
+  color:#fff; font-size:.88rem; display:flex; align-items:center; gap:10px; text-shadow: 0 1px 10px rgba(0,0,0,.5);
+}
+.descend i{ display:block; width:1px; height:42px; background: linear-gradient(#fff, rgba(255,255,255,0)); animation: drip 2.2s ease-in-out infinite; transform-origin: top; }
+@media (max-width: 600px){ .orbit-cap{ bottom: calc(86px + env(safe-area-inset-bottom,0px)); } .descend{ right:auto; left: clamp(18px,4vw,44px); } }
+@keyframes drip{ 0%{ transform: scaleY(0);} 50%{ transform: scaleY(1);} 100%{ transform: scaleY(1); opacity:0;} }
+
+.title-card{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding: 118px 22px 56px; opacity:0; pointer-events:none;
+}
+.title-card.live{ pointer-events:auto; }
+.logos{ display:flex; gap: clamp(12px,3vw,28px); margin-bottom: clamp(22px,4vh,40px); flex-wrap:wrap; justify-content:center; }
+.logo-slot{
+  width: clamp(52px, min(8vw, 9.5vh), 86px); aspect-ratio: 1; border-radius: 50%;
+  border: 1.5px dashed #B9C2CF; display:flex; align-items:center; justify-content:center;
+  color: var(--ink-3); font-size: .72rem; background: rgba(255,255,255,.7);
+}
+.logo-slot img{ width:100%; height:100%; object-fit:contain; border-radius:50%; }
+.deva{ font-family: var(--f-deva); font-size: clamp(1.3rem, 2.6vw, 1.9rem); color: var(--ink-2); line-height:1.2; }
+.ys-title{
+  font-family: var(--f-display); font-size: clamp(3.6rem, min(15vw, 19vh), 11.5rem); line-height: .9;
+  letter-spacing: -0.02em; margin: 6px 0 clamp(12px,2vh,20px);
+}
+.phase-row{ display:flex; align-items:center; gap: clamp(14px,3vw,28px); font-size: clamp(1.05rem,2vw,1.35rem); color: var(--ink); }
+.phase-row .sep{ width:1px; height: 1.4em; background: var(--ink-3); }
+.pair{ margin-top: clamp(18px,3.4vh,34px); font-family: var(--f-display); font-size: clamp(2rem, 5.4vw, 3.8rem); line-height:1; display:flex; align-items:baseline; gap: .35em; flex-wrap:wrap; justify-content:center; }
+.pair .s{ color: var(--moss); }
+.pair .r{ color: var(--haldi); }
+.pair .x{ font-family: var(--f-text); font-size: .5em; color: var(--ink-3); }
+
+/* =====================================================================
+   SCENE 2 — map of India, route Sikkim → Jodhpur
+   ===================================================================== */
+.route-scene{ position: relative; height: 380vh; background: var(--paper); }
+.route-pin{ position: sticky; top:0; height:100vh; height:100svh; overflow:hidden;
+  display:grid; grid-template-columns: minmax(0,1.15fr) minmax(0,.85fr); align-items:center;
+  padding: 80px clamp(18px,5vw,64px) 30px; gap: clamp(16px,4vw,56px); }
+.map-wrap{ position:relative; height: 100%; max-height: 86vh; display:flex; align-items:center; justify-content:center; }
+.map-wrap svg{ height:100%; width:auto; max-width:100%; overflow:visible; }
+.m-india{ fill: var(--sky); stroke: var(--ink); stroke-width: 1.4; stroke-linejoin: round; vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1; stroke-dashoffset: 1; fill-opacity: 0; }
+.m-sik{ fill: var(--moss); opacity:0; }
+.m-raj{ fill: var(--haldi); opacity:0; }
+.m-route{ fill:none; stroke: url(#routeGrad); stroke-width: 3; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.m-route-shadow{ fill:none; stroke: var(--ink); stroke-opacity:.12; stroke-width: 1; stroke-dasharray: 4 6; vector-effect: non-scaling-stroke; opacity:0; }
+.m-pin{ opacity:0; transform-box: fill-box; transform-origin: center; }
+.m-traveller{ opacity:0; }
+.m-label{ font-family: var(--f-text); font-size: 30px; fill: var(--ink); opacity:0; font-weight:600; paint-order: stroke; stroke: #fff; stroke-width: 7px; stroke-linejoin: round; }
+.m-label tspan.sub{ font-weight:400; fill: var(--ink-2); font-size: 23px; }
+
+.route-copy{ max-width: 30rem; }
+.route-copy .kicker{ color: var(--ink-2); font-size: .95rem; margin-bottom: 14px; opacity:0; }
+.route-copy h2{ font-family: var(--f-display); font-size: clamp(2.2rem, 4.6vw, 3.7rem); line-height: 1.02; letter-spacing: -0.01em; opacity:0; }
+.route-copy h2 .s{ color: var(--moss); }
+.route-copy h2 .r{ color: var(--haldi); }
+.nw{ white-space: nowrap; }
+.route-copy h2 .xx{ color: var(--ink-3); font-size:.7em; }
+.route-copy .para{ margin-top: 18px; color: var(--ink-2); max-width: 40ch; opacity:0; }
+.distance{ margin-top: 26px; display:flex; align-items:baseline; gap: 12px; opacity:0; border-top: 1px solid var(--rule); padding-top: 18px; }
+.distance b{ white-space:nowrap; font-family: var(--f-display); font-weight:400; font-size: clamp(2.4rem, 5vw, 3.4rem); line-height:1; font-variant-numeric: tabular-nums; }
+.distance span{ color: var(--ink-2); font-size:.92rem; max-width: 22ch; line-height:1.4; }
+
+@media (max-width: 860px){
+  .route-pin{ grid-template-columns: 1fr; grid-template-rows: minmax(0,1.1fr) auto; padding-top: 74px; gap: 8px; align-items: start; }
+  .map-wrap{ max-height: 54vh; }
+  .route-copy{ max-width: none; }
+  .route-copy .para{ display:none; }
+  .distance{ margin-top: 14px; padding-top: 12px; }
+}
+
+/* =====================================================================
+   SECTION 3 — the week (bridge to schedule page) + programme note
+   ===================================================================== */
+.week{ background: var(--sky); padding: clamp(70px,11vw,130px) 0; }
+.wrap{ max-width: 1120px; margin: 0 auto; padding: 0 clamp(18px,5vw,48px); }
+.week-grid{ display:grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: clamp(28px,6vw,80px); align-items:start; }
+.week h2{ font-family: var(--f-display); font-size: clamp(2.3rem, 5vw, 3.8rem); line-height:1.02; letter-spacing:-.01em; max-width: 14ch; }
+.week .lead{ margin-top: 18px; color: var(--ink-2); max-width: 42ch; }
+.week .cta-row{ margin-top: 30px; display:flex; gap:12px; flex-wrap: wrap; }
+.btn{ display:inline-flex; align-items:center; justify-content:center; padding: 14px 24px; border-radius: 999px; font-weight:600; text-decoration:none; font-size:.98rem; border: 1.5px solid var(--ink); }
+.btn.primary{ background: var(--ink); color:#fff; }
+.btn.primary:hover{ background:#0e1628; }
+.btn.ghost{ background: transparent; color: var(--ink); }
+.day-index{ list-style:none; margin:0; padding:0; border-top: 1px solid var(--rule); }
+.day-index li{ border-bottom: 1px solid var(--rule); }
+.day-index a{ display:grid; grid-template-columns: 5.2rem 1fr; gap: 14px; padding: 15px 4px; text-decoration:none; align-items:baseline; }
+.day-index a:hover .dl{ text-decoration: underline; text-underline-offset: 4px; }
+.day-index .dn{ font-family: var(--f-display); font-size: 1.45rem; line-height:1; }
+.day-index .dl{ font-weight:600; }
+.day-index .dd{ display:block; font-weight:400; color: var(--ink-2); font-size:.92rem; margin-top:2px; }
+.programme{ margin-top: clamp(60px,9vw,100px); padding-top: 34px; border-top: 1px solid var(--rule); display:grid; grid-template-columns: minmax(0,1fr) minmax(0,1.3fr); gap: clamp(24px,5vw,64px); }
+.programme h3{ font-family: var(--f-display); font-size: clamp(1.7rem,3vw,2.3rem); line-height:1.1; }
+.programme p{ color: var(--ink-2); max-width: 58ch; }
+.programme p + p{ margin-top: 12px; }
+@media (max-width: 820px){ .week-grid, .programme{ grid-template-columns: 1fr; } }
+
+/* =====================================================================
+   FOOTER
+   ===================================================================== */
+.foot{ background: var(--paper); border-top: 1px solid var(--rule); padding: 48px 0 calc(34px + env(safe-area-inset-bottom,0px)); font-size: .92rem; }
+.foot-grid{ display:grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 28px; }
+.foot h4{ margin:0 0 10px; font-size:.95rem; }
+.foot ul{ list-style:none; margin:0; padding:0; display:grid; gap:7px; }
+.foot a{ color: var(--ink-2); text-decoration: none; }
+.foot a:hover{ color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.foot .brand{ font-family: var(--f-display); font-size: 1.6rem; line-height:1.1; }
+.foot .credit{ margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--ink-3); font-size: .8rem; }
+@media (max-width: 760px){ .foot-grid{ grid-template-columns: 1fr 1fr; } .foot-grid > :first-child{ grid-column: 1 / -1; } }
+
+/* =====================================================================
+   SCHEDULE VIEW — "Rangilo Rajasthan"
+   1. Hero: Sikkim art | title + tagline | Rajasthan art
+   2. More than a desert: "From … to …" sentences with inline photo chips
+   3. Rangilo: the colour cities
+   4. The week through a jharokha: schedule (≈60%) + sticky window (≈40%)
+      that opens onto the Rajasthan behind the stop being read.
+   ===================================================================== */
+:root{
+  --c-pink:  #C9546E;   /* Jaipur */
+  --c-blue:  #2F6DB5;   /* Jodhpur, Blue City */
+  --c-sun:   #D9801C;   /* Jodhpur, Sun City */
+  --c-gold:  #B48A2C;   /* Jaisalmer */
+  --c-lake:  #1E7F84;   /* Udaipur */
+  --c-green: #3F7F4F;   /* wildlife, canal country */
+}
+.rr-wrap{ max-width: 1240px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 48px); }
+.rr-h2{ font-family: var(--f-display); font-weight: 400; font-size: clamp(2.2rem, 4.6vw, 3.6rem); line-height: 1; letter-spacing: -.01em; }
+.rr-sub{ margin-top: 12px; color: var(--ink-2); max-width: 58ch; font-size: 1.02rem; }
+
+/* ---------- 1. hero ---------- */
+.rr-hero{ background: var(--paper); padding-top: calc(58px + env(safe-area-inset-top,0px)); }
+.rr-hero .toran-svg{ display:block; }
+.rr-hero-grid{ display:grid; grid-template-columns: minmax(180px, 21vw) minmax(0,1fr) minmax(180px, 21vw);
+  min-height: calc(100vh - 110px); min-height: calc(100svh - 110px); }
+.rr-art{ position:relative; overflow:hidden; }
+.rr-art svg{ position:absolute; inset:0; width:100%; height:100%; }
+.rr-art::after{ content:''; position:absolute; left:0; right:0; bottom:0; height:40%; pointer-events:none;
+  background: linear-gradient(to top, rgba(12,20,34,.6), rgba(12,20,34,0)); }
+.rr-art-cap{ position:absolute; left:18px; right:18px; bottom:18px; z-index:1; color:#fff; font-size:.84rem; line-height:1.35;
+  text-shadow: 0 1px 10px rgba(0,0,0,.35); }
+.rr-art-cap b{ display:block; font-family: var(--f-display); font-weight:400; font-size: 1.9rem; line-height:1; margin-bottom:4px; }
+.rr-art.raj .rr-art-cap{ text-align:right; }
+.rr-hero-mid{ display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
+  padding: 40px clamp(18px, 4vw, 56px) 56px; }
+.rr-hero-mid .back{ align-self:center; margin-bottom: 22px; }
+.rr-kicker{ color: var(--ink-2); font-size: 1rem; }
+.rr-title{ margin: 10px 0 0; font-family: var(--f-display); font-weight:400; line-height:.88; letter-spacing:-.02em; }
+.rr-title .rangilo{ display:block; font-size: clamp(4.2rem, 11vw, 9.6rem); }
+.rr-title .rangilo span{ display:inline-block; }
+.rr-title .raj{ display:block; font-size: clamp(2.2rem, 5.4vw, 4.4rem); color: var(--ink); margin-top: 6px; }
+.rr-lede{ margin-top: 26px; max-width: 52ch; font-size: 1.08rem; line-height:1.6; color: var(--ink); }
+.rr-tagline{ margin-top: 26px; display:grid; gap: 4px; font-family: var(--f-display); font-size: clamp(1.25rem, 2.2vw, 1.6rem); line-height:1.25; color: var(--ink-2); }
+.rr-hero-mid .btn{ margin-top: 30px; }
+
+/* ---------- 2. more than a desert ---------- */
+.rr-beyond{ background: var(--paper); padding: clamp(56px, 8vw, 110px) 0 clamp(40px, 6vw, 80px); }
+.from-to{ margin-top: clamp(22px, 3vw, 36px); border-top: 1px solid var(--rule); }
+.ft-line{ font-family: var(--f-display); font-size: clamp(1.45rem, 3.3vw, 2.7rem); line-height: 1.3; padding: .5em 0 .55em;
+  border-bottom: 1px solid var(--rule); letter-spacing: -.005em; }
+.ft-line .w{ color: var(--ink-3); }
+.chip{ display:inline-block; width: 1.5em; height: 1em; vertical-align: -.12em; margin: 0 .16em 0 .08em;
+  border-radius: .75em .75em .14em .14em; background-size: cover; background-position: center;
+  box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px var(--k, var(--c-gold)); }
+
+/* ---------- 3. colour cities ---------- */
+.rr-colours{ background: var(--paper); padding: clamp(40px, 6vw, 80px) 0 clamp(56px, 8vw, 100px); }
+.city-row{ display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 12px; margin-top: 28px; }
+.city{ position:relative; border-radius: 120px 120px 14px 14px; padding: 64px 18px 20px; color:#fff; min-height: 230px;
+  display:flex; flex-direction:column; justify-content:flex-end; background: var(--k); overflow:hidden; }
+.city::before{ content:''; position:absolute; left:12px; right:12px; top:12px; bottom:12px; border-radius: 110px 110px 8px 8px;
+  border: 1.5px solid rgba(255,255,255,.45); pointer-events:none; }
+.city b{ font-family: var(--f-display); font-weight:400; font-size: 1.9rem; line-height:1; }
+.city .town{ font-weight:600; font-size:.95rem; margin-top: 4px; }
+.city p{ font-size:.86rem; line-height:1.4; margin-top: 8px; opacity:.92; }
+.city .here{ position:absolute; top: 26px; left:50%; transform: translateX(-50%); font-size:.72rem; font-weight:700;
+  background:#fff; color: var(--k); padding: 3px 10px; border-radius: 999px; white-space:nowrap; }
+@media (max-width: 900px){
+  .city-row{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .city:last-child{ grid-column: 1 / -1; min-height: 190px; }
+}
+
+/* ---------- 4. the week through a jharokha ---------- */
+.rr-week{ background: var(--sky); padding: clamp(56px, 8vw, 100px) 0 clamp(56px, 8vw, 90px); }
+.week-head{ display:grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px 48px; align-items:end; }
+.week-head p{ color: var(--ink-2); max-width: 50ch; }
+.week-head p i{ font-style: normal; font-weight:600; color: var(--ink); }
+@media (max-width: 900px){ .week-head{ grid-template-columns: 1fr; } }
+
+.day-jump{ position: sticky; top: calc(58px + env(safe-area-inset-top,0px)); z-index: 6; background: rgba(242,245,248,.94);
+  backdrop-filter: blur(8px); display:flex; gap:8px; overflow-x:auto; padding: 12px 0; margin: 26px 0 0;
+  border-bottom: 1px solid var(--rule); scrollbar-width: none; }
+.day-jump::-webkit-scrollbar{ display:none; }
+.day-jump button{ flex:none; border: 1px solid var(--rule); background: var(--paper); border-radius: 999px; padding: 7px 14px;
+  font-size:.86rem; cursor:pointer; white-space:nowrap; color: var(--ink); }
+.day-jump button.on{ background: var(--ink); color:#fff; border-color: var(--ink); }
+
+.wk-grid{ display:grid; grid-template-columns: minmax(0, 58fr) minmax(0, 42fr); gap: clamp(24px, 3.4vw, 52px); align-items:start; }
+.wk-days{ min-width:0; }
+
+.day{ padding: 34px 0 10px; scroll-margin-top: 130px; }
+.day + .day{ border-top: 1px solid var(--rule); }
+.day-h{ display:flex; align-items:baseline; gap: 14px; flex-wrap:wrap; }
+.day-h h3{ font-family: var(--f-display); font-weight:400; font-size: clamp(2.2rem, 4vw, 3rem); line-height:1; }
+.day-h .name{ font-size: 1.08rem; font-weight:600; }
+.day-pillars{ display:flex; flex-wrap:wrap; gap:6px; margin: 12px 0 16px; }
+.day-pillars span{ font-size:.76rem; padding: 3px 10px; border-radius: 999px; background: var(--paper); color: var(--ink-2); border: 1px solid var(--rule); }
+
+.ev{ display:grid; grid-template-columns: 6.6rem minmax(0,1fr); gap: 4px 16px; padding: 14px 14px; margin: 0 -14px;
+  border-radius: 14px; transition: background .35s ease, box-shadow .35s ease; }
+.ev + .ev{ border-top: 1px dashed var(--rule); }
+.ev.has-win{ cursor: default; }
+.ev.lit{ background: var(--paper); box-shadow: inset 3px 0 0 var(--wc, var(--ink)), 0 1px 0 var(--rule); border-top-color: transparent; }
+.ev.lit + .ev{ border-top-color: transparent; }
+.ev-time{ font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: .9rem; padding-top: 2px; }
+.ev-time.none{ color: var(--ink-3); }
+.ev-title{ font-weight:600; font-size: 1.04rem; line-height:1.35; display:flex; align-items:flex-start; gap: 10px; }
+.ev-title .jh-ico{ flex:none; width: 18px; height: 22px; margin-top: 1px; color: var(--wc, var(--c-gold)); }
+.ev-route{ font-size:.86rem; color: var(--ink-2); margin-top: 3px; }
+.ev-detail{ margin-top: 6px; color: var(--ink); font-size:.96rem; max-width: 62ch; }
+.ev-links{ display:flex; flex-wrap:wrap; gap: 8px; margin-top: 9px; }
+.map-link{ display:inline-flex; align-items:center; gap:6px; font-size:.82rem; text-decoration:none; padding: 5px 11px;
+  border-radius: 999px; border: 1px solid var(--rule); color: var(--ink); background: var(--paper); }
+.map-link:hover{ border-color: var(--ink); }
+.map-link svg{ width:13px; height:13px; }
+@media (max-width: 560px){ .ev{ grid-template-columns: 1fr; } .ev-time{ padding-top:0; } }
+
+/* the window */
+.wk-window{ position: sticky; top: calc(58px + 58px + 18px + env(safe-area-inset-top,0px)); min-width:0;
+  height: calc(100vh - 58px - 58px - 36px); height: calc(100svh - 58px - 58px - 36px);
+  display:flex; flex-direction:column; padding-top: 34px; }
+.jh{ margin:0; flex: 1 1 auto; min-height: 0; display:flex; flex-direction:column; }
+.jh svg{ flex: 1 1 auto; min-height: 0; width: 100%; height: 100%; display:block; }
+.jh-img{ transition: opacity .6s ease; }
+.jh figcaption{ font-size:.74rem; color: var(--ink-3); margin-top: 6px; text-align:center; }
+.jh figcaption a{ color: inherit; }
+.jh-text{ flex: none; padding-top: 14px; }
+.jh-tag{ display:inline-block; font-size:.74rem; font-weight:700; padding: 3px 10px; border-radius: 999px; color:#fff; background: var(--wc); }
+.jh-place{ font-size:.86rem; color: var(--ink-2); margin-left: 8px; }
+.jh-text h4{ margin: 10px 0 0; font-family: var(--f-display); font-weight:400; font-size: clamp(1.6rem, 2.4vw, 2.1rem); line-height:1.05; color: var(--wc); }
+.jh-text p{ margin-top: 8px; font-size: .95rem; line-height:1.55; max-width: 48ch; }
+.jh-text.swap{ animation: jhIn .5s ease; }
+@keyframes jhIn{ from{ opacity:0; transform: translateY(6px); } to{ opacity:1; transform:none; } }
+.jh-dots{ display:flex; gap: 6px; flex-wrap:wrap; margin-top: 14px; flex:none; }
+.jh-dots button{ width: 10px; height: 10px; padding:0; border:0; transform: rotate(45deg); background: var(--rule); cursor:pointer; border-radius: 1px; }
+.jh-dots button.on{ background: var(--wc); }
+.jh-dots button:focus-visible{ outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* inline windows, used instead of the sticky one on narrow screens */
+.jh-mini{ display:none; }
+@media (max-width: 999px){
+  .wk-grid{ grid-template-columns: minmax(0,1fr); }
+  .wk-window{ display:none; }
+  .jh-mini{ display:block; grid-column: 1 / -1; margin: 12px 0 4px; background: var(--paper); border-radius: 16px; overflow:hidden;
+    border: 1px solid var(--rule); }
+  .jh-mini svg{ display:block; width:100%; height:auto; }
+  .jh-mini .mt{ padding: 12px 16px 16px; }
+  .jh-mini h4{ margin: 8px 0 0; font-family: var(--f-display); font-weight:400; font-size: 1.55rem; line-height:1.05; color: var(--wc); }
+  .jh-mini p{ margin-top: 6px; font-size:.94rem; line-height:1.55; }
+  .jh-mini .cr{ display:block; margin-top: 8px; font-size:.72rem; color: var(--ink-3); }
+  .jh-mini .cr a{ color: inherit; }
+  .ev.lit{ box-shadow: inset 3px 0 0 var(--wc, var(--ink)); }
+}
+
+/* links and credits */
+.useful{ margin-top: 54px; padding: 28px; background: var(--paper); border-radius: 18px; border: 1px solid var(--rule); }
+.useful h2{ font-family: var(--f-display); font-weight:400; font-size: 2rem; line-height:1.05; }
+.useful ul{ list-style:none; margin: 16px 0 0; padding:0; display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px 22px; }
+.useful a{ font-weight:600; text-decoration: none; }
+.useful a:hover{ text-decoration: underline; text-underline-offset: 4px; }
+.useful li span{ display:block; font-size:.86rem; color: var(--ink-2); font-weight:400; }
+@media (max-width: 860px){ .useful ul{ grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px){ .useful ul{ grid-template-columns: 1fr; } }
+.credits{ margin-top: 18px; font-size: .84rem; color: var(--ink-2); }
+.credits summary{ cursor:pointer; font-weight:600; color: var(--ink); padding: 6px 0; }
+.credits ul{ margin: 8px 0 0; padding-left: 18px; display:grid; gap: 4px; columns: 2; }
+.credits li{ break-inside: avoid; }
+.credits a{ color: var(--ink-2); }
+@media (max-width: 700px){ .credits ul{ columns: 1; } }
+
+/* hero on narrow screens: the two paintings become a banner above the title */
+@media (max-width: 1000px){
+  .rr-hero-grid{ grid-template-columns: 1fr 1fr; min-height: 0; }
+  .rr-art{ height: clamp(170px, 36vw, 300px); }
+  .rr-art.sikkim{ grid-column: 1; grid-row: 1; }
+  .rr-art.raj{ grid-column: 2; grid-row: 1; }
+  .rr-hero-mid{ grid-column: 1 / -1; grid-row: 2; padding-top: 28px; }
+  .rr-art-cap b{ font-size: 1.45rem; margin:0; }
+  .rr-art-cap .d{ display:none; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .jh-img, .ev{ transition: none; }
+  .jh-text.swap{ animation: none; }
+}
+.rr-hero-mid .btn{ background: var(--ink); color:#fff; font: inherit; font-weight:600; cursor:pointer; }
+.rr-hero-mid .btn:hover{ background: #0E1A30; }
+
+/* =====================================================================
+   Accents borrowed from the printed itinerary: navy + saffron, lotus
+   dividers, letter-spaced day titles, peach time pills, activity icons,
+   and the "A Stronger Bharat Together" line with tricolour dashes.
+   ===================================================================== */
+:root{ --navy:#1F3A8A; --peach:#FCE4D2; --vermilion:#C2402F; --f-script:'Dancing Script', cursive; }
+.lotus{ display:flex; align-items:center; gap: 12px; margin: 14px 0 0; color: var(--c-sun); max-width: 320px; }
+.lotus::before, .lotus::after{ content:''; flex:1; height:1px; background: currentColor; opacity:.6; }
+.lotus svg{ width: 34px; height: 22px; flex:none; }
+.center .lotus, .lotus.center{ margin-left:auto; margin-right:auto; }
+.bharat{ font-family: var(--f-script); font-weight:600; color: var(--vermilion); font-size: clamp(1.9rem, 3.4vw, 2.6rem); line-height:1.1; text-align:center; }
+.tricolour{ display:flex; justify-content:center; gap: 10px; margin-top: 10px; }
+.tricolour i{ width: 42px; height: 4px; border-radius: 4px; background: #F08A24; }
+.tricolour i:nth-child(2){ background: var(--navy); }
+.tricolour i:nth-child(3){ background: #1E8B4A; }
+
+.day-sub{ margin: 8px 0 0; font-size: .76rem; letter-spacing: .18em; text-transform: uppercase; color: var(--navy); font-weight:600; }
+.day-h h3{ color: var(--navy); }
+.ev-time span{ display:inline-block; background: var(--peach); color: var(--vermilion); font-weight:700; font-size:.84rem; padding: 3px 9px; border-radius: 7px; }
+.ev-time.none span{ background: transparent; color: var(--ink-3); font-weight:500; padding-left:0; }
+.ev-body{ display:grid; grid-template-columns: 38px minmax(0,1fr); gap: 12px; align-items:start; }
+.ev-main{ min-width:0; }
+.ev-ico{ width: 38px; height: 38px; border-radius: 50%; background: var(--paper); border: 1px solid var(--rule); color: var(--navy);
+  display:flex; align-items:center; justify-content:center; }
+.ev-ico svg{ width: 21px; height: 21px; }
+.ev.lit .ev-ico{ border-color: var(--wc); color: var(--wc); }
+button.map-link{ font: inherit; font-size:.82rem; cursor:pointer; }
+.campus-link{ color: var(--navy) !important; border-color: #C9D3EC !important; background: #F2F5FC !important; }
+
+/* campus map */
+.rr-campus{ background: var(--paper); padding: clamp(56px, 8vw, 100px) 0; scroll-margin-top: 60px; }
+.cm-grid{ display:grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 44px); margin-top: 28px; align-items:start; }
+.cm-map{ border-radius: 22px; overflow:hidden; border: 1px solid var(--rule); background:#F3EEE4; }
+.cm-map svg{ display:block; width:100%; height:auto; }
+.cm-credit{ font-size:.74rem; color: var(--ink-3); padding: 8px 14px 10px; background: var(--paper); border-top: 1px solid var(--rule); }
+.cm-credit a{ color: inherit; }
+.cm-campus path{ fill:#FBF6EC; stroke:#C9A24B; stroke-width:2; stroke-dasharray:6 5; }
+.cm-green path{ fill:#DDEBD3; }
+.cm-pitch path{ fill:#CFE3C0; stroke:#9DBF8A; }
+.cm-water path{ fill:#BFDDEB; }
+.cm-foot path{ fill:none; stroke:#D8CBB0; stroke-width:1.2; stroke-dasharray:3 3; }
+.cm-road path{ fill:none; stroke:#fff; stroke-width:5; stroke-linecap:round; stroke-linejoin:round; }
+.cm-road-major path{ fill:none; stroke:#F2D39B; stroke-width:9; stroke-linecap:round; }
+.cm-bldg path{ fill:#E7CFB0; stroke:#B98F63; stroke-width:1; }
+.cm-hostel path{ fill:#E3D4E8; stroke:#A58AB0; stroke-width:1; }
+.cm-lm{ font-family: var(--f-text); font-size: 15px; fill: #7A6A55; font-style: italic; paint-order: stroke; stroke:#FBF6EC; stroke-width:5px; }
+.cm-pin{ cursor:pointer; }
+.cm-pin .halo{ fill: var(--c-sun); opacity: 0; transition: opacity .25s ease; }
+.cm-pin .dot{ fill: var(--navy); stroke:#fff; stroke-width:3; }
+.cm-pin .num{ font-family: var(--f-text); font-weight:700; font-size: 16px; fill:#fff; pointer-events:none; }
+.cm-pin .cm-lab{ font-family: var(--f-text); font-weight:700; font-size: 18px; fill: var(--navy); paint-order: stroke; stroke:#fff; stroke-width:6px; stroke-linejoin:round; }
+.cm-pin.on .halo{ opacity: .35; }
+.cm-pin.on .dot{ fill: var(--vermilion); }
+.cm-list{ list-style:none; margin:0; padding:0; display:grid; gap: 8px; }
+.cm-list li{ display:flex; align-items:center; gap: 8px; background: var(--sky); border-radius: 14px; padding: 4px 12px 4px 4px; border: 1.5px solid transparent; transition: border-color .2s ease, background .2s ease; }
+.cm-list li.on{ border-color: var(--vermilion); background: #FFF6F0; }
+.cm-list button{ flex:1; display:flex; align-items:center; gap: 12px; text-align:left; background:none; border:0; padding: 10px; font: inherit; color: var(--ink); cursor:pointer; min-width:0; }
+.cm-list .n{ flex:none; width: 30px; height: 30px; border-radius: 50%; background: var(--navy); color:#fff; font-weight:700; font-size:.9rem; display:flex; align-items:center; justify-content:center; }
+.cm-list li.on .n{ background: var(--vermilion); }
+.cm-list .t b{ display:block; font-weight:600; }
+.cm-list .t span{ display:block; font-size:.84rem; color: var(--ink-2); line-height:1.35; }
+.cm-list .gm{ flex:none; font-size:.8rem; color: var(--navy); text-decoration:none; border:1px solid #C9D3EC; background:#fff; border-radius:999px; padding: 5px 10px; white-space:nowrap; }
+.cm-list .gm:hover{ border-color: var(--navy); }
+@media (max-width: 900px){ .cm-grid{ grid-template-columns: 1fr; } }
+
+/* contacts */
+.rr-contact{ background: var(--sky); padding: clamp(56px, 8vw, 100px) 0; scroll-margin-top: 60px; }
+.ct-grid{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; margin-top: 28px; }
+.ct{ display:flex; align-items:center; gap: 14px; background: #FFF8F1; border: 1px solid #F1E0CF; border-radius: 16px; padding: 14px 16px; }
+.ct .av{ flex:none; width: 46px; height: 46px; border-radius: 50%; background: var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; }
+.ct .av svg{ width: 24px; height: 24px; }
+.ct .who{ flex:1; min-width:0; }
+.ct .who b{ display:block; color: var(--navy); font-size: 1.02rem; }
+.ct .who span{ display:block; font-size:.86rem; color: var(--ink-2); }
+.ct .ph{ flex:none; display:inline-flex; align-items:center; gap: 8px; text-decoration:none; color: var(--navy); font-weight:600; font-variant-numeric: tabular-nums;
+  border-left: 1px solid #E8D6C4; padding-left: 14px; white-space:nowrap; }
+.ct .ph i{ width: 30px; height: 30px; border-radius:50%; background: var(--navy); color:#fff; display:inline-flex; align-items:center; justify-content:center; }
+.ct .ph svg{ width: 15px; height: 15px; }
+.ct.mail{ grid-column: 1 / -1; background: #E6EEFB; border-color: #CCDAF3; }
+.ct.mail .who b{ font-size: 1.15rem; }
+.rr-contact .bharat{ margin-top: 44px; }
+@media (max-width: 760px){
+  .ct-grid{ grid-template-columns: 1fr; }
+  .ct{ flex-wrap: wrap; }
+  .ct .ph{ border-left:0; padding-left: 60px; margin-top: -4px; }
+}
+.rr-links{ background: var(--paper); padding: 10px 0 clamp(56px, 8vw, 90px); }
+
+
+/* logos (from the printed itinerary) and club block */
+.logos{ align-items:center; }
+.logos .logo{ height: clamp(40px, min(7vw, 8.5vh), 76px); width:auto; display:block; }
+.tc-bharat{ margin-top: clamp(10px, 2vh, 20px); font-size: clamp(1.5rem, 2.8vw, 2.1rem); }
+.title-card .tricolour{ margin-top: 6px; }
+.programme.club h3{ color: var(--navy); }
+.programme.club .lotus{ margin-left:0; }
+.foot-logos{ display:flex; align-items:center; gap: 14px; margin-top: 16px; flex-wrap:wrap; }
+.foot-logos img{ height: 38px; width:auto; }
+
+/* =====================================================================
+   REDUCED MOTION — no pinned sequences; show every end state statically
+   ===================================================================== */
+@media (max-width: 700px){
+  .m-label{ font-size: 44px; stroke-width: 9px; }
+  .m-label tspan.sub{ font-size: 32px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .sky-scene{ height:auto; }
+  .sky-pin{ position:relative; height:auto; background: var(--paper); overflow: visible; }
+  .sat{ position:relative; inset:auto; height: 62vh; width:100%; transform:none !important; background-size: cover !important; background-position: 50% 42% !important; }
+  .royal{ display:none; }
+  .clouds, .veil, .descend{ display:none; }
+  .orbit-cap{ position:absolute; top: calc(62vh - 120px); bottom:auto; }
+  .title-card{ position:relative; opacity:1 !important; padding: 60px 22px; pointer-events:auto; }
+  .route-scene{ height:auto; }
+  .route-pin{ position:relative; height:auto; min-height: 90vh; }
+  .descend i{ animation:none; }
+}
+
+/* =====================================================================
+   AMBIENT SOUND CONTROL
+   ===================================================================== */
+.sound-toggle{
+  width:42px;
+  height:38px;
+  padding:0;
+  margin:0;
+  border:1px solid currentColor;
+  border-radius:999px;
+  background:transparent;
+  color:inherit;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  flex:0 0 auto;
+  opacity:.92;
+  transition:background .2s ease,color .2s ease,border-color .2s ease,
+             transform .15s ease,opacity .2s ease;
+}
+.sound-toggle:hover{ opacity:1; transform:translateY(-1px); }
+.sound-toggle:active{ transform:translateY(0); }
+.sound-toggle:focus-visible{ outline:2px solid currentColor; outline-offset:3px; }
+.sound-toggle svg{
+  width:18px;
+  height:18px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.sound-toggle .sound-wave{
+  opacity:.24;
+  transition:opacity .2s ease;
+}
+.sound-toggle.is-on .sound-wave{ opacity:1; }
+.sound-toggle .sound-slash{
+  opacity:1;
+  transition:opacity .2s ease;
+}
+.sound-toggle.is-on .sound-slash{ opacity:0; }
+@media (max-width:560px){
+  .sound-toggle{ width:38px; height:36px; }
+  .sound-toggle svg{ width:17px; height:17px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================ LOADER ============================ -->
+<div class="loader" id="loader" role="status" aria-live="polite">
+  <svg viewBox="0 0 __MW__ __MH__" aria-hidden="true">
+    <path class="fill-in" id="ldFill" d="__INDIA__"/>
+    <path class="trace" id="ldTrace" pathLength="1" d="__INDIA__"/>
+    <g class="dot" id="ldDots">
+      <circle cx="__GX__" cy="__GY__" r="9" fill="#3C7A5A"/>
+      <circle cx="__JX__" cy="__JY__" r="9" fill="#CF8E17"/>
+    </g>
+  </svg>
+  <div class="loader-count" id="ldCount">000</div>
+  <div class="loader-label" id="ldLabel">Tracing the map</div>
+</div>
+
+<!-- ============================ HEADER ============================ -->
+<header class="site-head" id="head">
+  <a class="mark" href="#home" aria-label="Yuva Sangam Phase 7, home"><b>Yuva Sangam</b><span>Phase 7, 2026</span></a>
+  <nav class="head-nav" aria-label="Primary">
+    <a class="hide-sm" href="#home" data-scroll="week">The week</a>
+    <a class="hide-sm" href="#schedule/campus">Campus map</a>
+    <a class="hide-sm" href="#schedule/contact">Contact</a>
+    <button class="sound-toggle" id="soundToggle" type="button"
+      aria-label="Turn sound on" aria-pressed="false" title="Turn sound on">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3.5 9.5v5h3.6l4.7 4V5.5l-4.7 4H3.5z"></path>
+        <path class="sound-wave" d="M15 9.4a4.8 4.8 0 0 1 0 5.2"></path>
+        <path class="sound-wave" d="M17.9 7.1a8.2 8.2 0 0 1 0 9.8"></path>
+        <path class="sound-slash" d="M4 4l16 16"></path>
+      </svg>
+    </button>
+    <a class="pill" id="headCta" href="#schedule">Schedule</a>
+  </nav>
+</header>
+
+<!-- ============================ HOME VIEW ============================ -->
+<main class="view" id="view-home">
+
+  <!-- Scene 1: satellite → clouds → whiteout → title -->
+  <section class="sky-scene" id="sky" aria-label="Yuva Sangam Phase 7 title">
+    <div class="sky-pin">
+      <div class="sat" id="sat" role="img" aria-label="Satellite image of India and the Himalaya"></div>
+      <div class="clouds" id="clouds" aria-hidden="true"></div>
+      <div class="topscrim" aria-hidden="true"></div>
+      <div class="veil" id="veil"></div>
+      <!-- Royal frame: built for the current screen size by drawRoyal() -->
+      <div class="royal" id="royal" aria-hidden="true">
+        <svg class="royal-svg" id="royalSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="toran">__TORAN1__</div>
+      </div>
+
+      <div class="orbit-cap" id="orbitCap">
+        <div class="big">From Kanchenjunga to the Thar</div>
+        <div class="small">India from orbit. NASA Blue Marble imagery.</div>
+      </div>
+      <div class="descend" id="descend">Scroll to descend <i></i></div>
+
+      <div class="title-card" id="titleCard">
+        <div class="logos" aria-label="Partner logos">
+          <img class="logo" src="__LOGO_MOE__" alt="Ministry of Education, Government of India">
+          <img class="logo" src="__LOGO_IITJ__" alt="Indian Institute of Technology Jodhpur">
+          <img class="logo" src="__LOGO_YUVA__" alt="Yuva Sangam">
+          <img class="logo" src="__LOGO_EBSB__" alt="Ek Bharat Shreshtha Bharat">
+        </div>
+        <div class="deva" lang="hi">युवा संगम</div>
+        <h1 class="ys-title">Yuva Sangam</h1>
+        <div class="phase-row"><span>Phase 7</span><span class="sep" aria-hidden="true"></span><span>2026</span></div>
+        <div class="pair"><span class="s">Sikkim</span><span class="x" aria-label="with">×</span><span class="r">Rajasthan</span></div>
+        <p class="bharat tc-bharat">A Stronger Bharat Together</p>
+        <div class="tricolour" aria-hidden="true"><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scene 2: map + route -->
+  <section class="route-scene" id="route" aria-label="The route from Sikkim to Jodhpur">
+    <div class="route-pin">
+      <div class="map-wrap">
+        <svg id="mapSvg" viewBox="-20 -20 __MW2__ __MH2__" role="img" aria-label="Map of India with a route from Gangtok, Sikkim, to IIT Jodhpur, Rajasthan">
+          <defs>
+            <linearGradient id="routeGrad" gradientUnits="userSpaceOnUse" x1="__GX__" y1="__GY__" x2="__JX__" y2="__JY__">
+              <stop offset="0" stop-color="#3C7A5A"/><stop offset="1" stop-color="#CF8E17"/>
+            </linearGradient>
+          </defs>
+          <path class="m-india" id="mIndia" pathLength="1" d="__INDIA__"/>
+          <path class="m-raj" id="mRaj" d="__RAJ__"/>
+          <path class="m-sik" id="mSik" d="__SIK__"/>
+          <path class="m-route-shadow" id="mRouteShadow" d="__ARC__"/>
+          <path class="m-route" id="mRoute" pathLength="1" d="__ARC__"/>
+          <g class="m-pin" id="pinG"><circle cx="__GX__" cy="__GY__" r="10" fill="#fff" stroke="#3C7A5A" stroke-width="4"/></g>
+          <g class="m-pin" id="pinJ"><circle cx="__JX__" cy="__JY__" r="10" fill="#fff" stroke="#CF8E17" stroke-width="4"/></g>
+          <circle class="m-traveller" id="trav" r="7" fill="#17223A"/>
+          <text class="m-label" id="lblG" x="__GLX__" y="__GLY__" text-anchor="end">Sikkim University<tspan class="sub" x="__GLX__" dy="30">Gangtok, Sikkim</tspan></text>
+          <text class="m-label" id="lblJ" x="__JLX__" y="__JLY__">IIT Jodhpur<tspan class="sub" x="__JLX__" dy="30">Jodhpur, Rajasthan</tspan></text>
+        </svg>
+      </div>
+      <div class="route-copy">
+        <p class="kicker" id="rcK">Ek Bharat Shreshtha Bharat pairs states so their young people can spend a week in each other's world.</p>
+        <h2 id="rcH"><span class="s nw">Sikkim University</span> <span class="xx">×</span> <span class="r nw">IIT Jodhpur</span></h2>
+        <p class="para" id="rcP">A delegation from Sikkim crosses the country to Rajasthan for a week of forts, dunes, labs, village life and new friends, hosted by IIT Jodhpur.</p>
+        <div class="distance" id="rcD"><b id="kmCount">0 km</b><span>Gangtok to Jodhpur, as the crow flies</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: the week → schedule page -->
+  <section class="week" id="week">
+    <div class="wrap">
+      <div class="week-grid">
+        <div>
+          <h2>Six days in Rajasthan</h2>
+          <p class="lead">From the labs of IIT Jodhpur and the ramparts of Mehrangarh to sunset on the dunes of Osian, with a village visit, Mandore’s gardens and a Gandhi Jayanti performance along the way.</p>
+          <div class="cta-row">
+            <a class="btn primary" href="#schedule">Open the full schedule</a>
+          </div>
+        </div>
+        <ol class="day-index" id="dayIndex" aria-label="Days at a glance"></ol>
+      </div>
+
+      <div class="programme club">
+        <div>
+          <h3>About the EBSB Club and our journey</h3>
+          <div class="lotus" aria-hidden="true"><svg viewBox="0 0 34 22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M17 3c3 3 3.5 8 0 14-3.5-6-3-11 0-14Z"/><path d="M17 17c-3-1-7-4-8-9 4 .5 7 3.5 8 9Z"/><path d="M17 17c3-1 7-4 8-9-4 .5-7 3.5-8 9Z"/><path d="M17 17c-5 1-10-1-13-5 5-1 10 1 13 5Z"/><path d="M17 17c5 1 10-1 13-5-5-1-10 1-13 5Z"/><path d="M8 19.5h18"/></svg></div>
+        </div>
+        <div>
+          <p>Ek Bharat Shreshtha Bharat (EBSB) is a Government of India initiative that pairs states and union territories to build deeper cultural, social and academic ties among the people of India. Under this umbrella, Yuva Sangam brings student delegations from paired states together for a shared, immersive experience, anchored in five themes: Parampara (tradition), Paryatan (tourism), Paraspar Sampark (people-to-people connect), Prodyogiki (technology) and Pragati (progress).</p>
+          <p>The IIT Jodhpur EBSB Club has been the institute’s home for this exchange since its early phases, coordinating logistics, cultural programming and campus engagement for visiting delegations. Through this platform, we strive to celebrate India’s diversity, foster mutual understanding and create lasting friendships between the youth of our paired states.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============================ SCHEDULE VIEW ============================ -->
+<main class="view" id="view-schedule">
+
+  <!-- 1. Rangilo Rajasthan -->
+  <section class="rr-hero" aria-labelledby="rrTitle">
+    __TORAN2__
+    <div class="rr-hero-grid">
+      <aside class="rr-art sikkim" aria-label="Sikkim">
+        __SIKKIM_SVG__
+        <span class="rr-art-cap"><b>Sikkim</b><span class="d">From the Himalayas</span></span>
+      </aside>
+      <div class="rr-hero-mid">
+        <a class="back" href="#home">Back to home</a>
+        <p class="rr-kicker">Itinerary for the Sikkim delegation, hosted by IIT Jodhpur</p>
+        <h1 class="rr-title" id="rrTitle"><span class="rangilo" id="rangilo" aria-label="Rangilo">Rangilo</span><span class="raj">Rajasthan</span></h1>
+        <p class="rr-lede">Most people picture a desert. Rajasthan is that, and a great deal more: tigers and leopards, lakes and a hill station, forts on every ridge, temples carved a thousand years ago, and a real part of India’s science story.</p>
+        <p class="rr-tagline"><span>Every step, an adventure.</span><span>Every breath, something new.</span><span>Every glance, a window into history.</span></p>
+        <button type="button" class="btn" data-go="rr-week">See the week</button>
+      </div>
+      <aside class="rr-art raj" aria-label="Rajasthan">
+        __RAJ_SVG__
+        <span class="rr-art-cap"><b>Rajasthan</b><span class="d">To the Thar</span></span>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 2. More than a desert -->
+  <section class="rr-beyond" aria-labelledby="beyondH">
+    <div class="rr-wrap">
+      <h2 class="rr-h2" id="beyondH">More than a desert</h2><div class="lotus" aria-hidden="true"><svg viewBox="0 0 34 22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M17 3c3 3 3.5 8 0 14-3.5-6-3-11 0-14Z"/><path d="M17 17c-3-1-7-4-8-9 4 .5 7 3.5 8 9Z"/><path d="M17 17c3-1 7-4 8-9-4 .5-7 3.5-8 9Z"/><path d="M17 17c-5 1-10-1-13-5 5-1 10 1 13 5Z"/><path d="M17 17c5 1 10-1 13-5-5-1-10 1-13 5Z"/><path d="M8 19.5h18"/></svg></div>
+      <div class="from-to" id="fromTo"></div>
+    </div>
+  </section>
+
+  <!-- 3. The colour cities -->
+  <section class="rr-colours" aria-labelledby="coloursH">
+    <div class="rr-wrap">
+      <h2 class="rr-h2" id="coloursH">Rangilo: a city for every colour</h2><div class="lotus" aria-hidden="true"><svg viewBox="0 0 34 22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M17 3c3 3 3.5 8 0 14-3.5-6-3-11 0-14Z"/><path d="M17 17c-3-1-7-4-8-9 4 .5 7 3.5 8 9Z"/><path d="M17 17c3-1 7-4 8-9-4 .5-7 3.5-8 9Z"/><path d="M17 17c-5 1-10-1-13-5 5-1 10 1 13 5Z"/><path d="M17 17c5 1 10-1 13-5-5-1-10 1-13 5Z"/><path d="M8 19.5h18"/></svg></div>
+      <p class="rr-sub">Rangilo means colourful, and Rajasthan names its cities that way. The delegation stays in one that has two of these names.</p>
+      <div class="city-row">
+        <div class="city" style="--k:var(--c-pink)"><b>Pink City</b><span class="town">Jaipur</span><p>Painted terracotta pink in 1876 to welcome the Prince of Wales, and kept that way.</p></div>
+        <div class="city" style="--k:var(--c-blue)"><span class="here">You’re here</span><b>Blue City</b><span class="town">Jodhpur</span><p>Indigo-washed houses crowd the old town below Mehrangarh.</p></div>
+        <div class="city" style="--k:var(--c-sun)"><span class="here">You’re here</span><b>Sun City</b><span class="town">Jodhpur</span><p>Bright, clear sunshine for most of the year.</p></div>
+        <div class="city" style="--k:var(--c-gold)"><b>Golden City</b><span class="town">Jaisalmer</span><p>A yellow sandstone fort that glows at sunset, deep in the Thar.</p></div>
+        <div class="city" style="--k:var(--c-lake)"><b>City of Lakes</b><span class="town">Udaipur</span><p>Palaces rise straight out of Lake Pichola and Fateh Sagar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. The week, through a jharokha -->
+  <section class="rr-week" id="rr-week" aria-labelledby="weekH">
+    <div class="rr-wrap">
+      <div class="week-head">
+        <div><h2 class="rr-h2" id="weekH">The week, through a jharokha</h2><div class="lotus" aria-hidden="true"><svg viewBox="0 0 34 22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M17 3c3 3 3.5 8 0 14-3.5-6-3-11 0-14Z"/><path d="M17 17c-3-1-7-4-8-9 4 .5 7 3.5 8 9Z"/><path d="M17 17c3-1 7-4 8-9-4 .5-7 3.5-8 9Z"/><path d="M17 17c-5 1-10-1-13-5 5-1 10 1 13 5Z"/><path d="M17 17c5 1 10-1 13-5-5-1-10 1-13 5Z"/><path d="M8 19.5h18"/></svg></div></div>
+        <p>A <i>jharokha</i> is the carved window of a Rajasthani palace. As you read the schedule, the window beside it opens onto the Rajasthan behind each stop. Timings are tentative and may shift closer to the visit.</p>
+      </div>
+      <nav class="day-jump" id="dayJump" aria-label="Jump to a day"></nav>
+      <div class="wk-grid">
+        <div class="wk-days" id="days"></div>
+        <aside class="wk-window" id="winAside" aria-label="Rajasthan, through the window">
+          <figure class="jh">
+            <svg id="jhSvg" viewBox="0 0 400 470" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="jhAlt">
+              <title id="jhAlt">Photo</title>
+              <defs>
+                <clipPath id="jhClip"><path id="jhOpening"/></clipPath>
+                <pattern id="jhJaali" width="18" height="18" patternUnits="userSpaceOnUse">
+                  <path d="M9,0 L18,9 L9,18 L0,9Z" fill="none" stroke="currentColor" stroke-width=".9"/>
+                  <circle cx="9" cy="9" r="1.4" fill="currentColor"/>
+                </pattern>
+              </defs>
+              <g id="jhFrame"></g>
+              <g clip-path="url(#jhClip)">
+                <rect x="0" y="0" width="400" height="470" fill="#E9E2D3"/>
+                <image class="jh-img" id="jhA" x="44" y="40" width="312" height="400" preserveAspectRatio="xMidYMid slice"/>
+                <image class="jh-img" id="jhB" x="44" y="40" width="312" height="400" preserveAspectRatio="xMidYMid slice" opacity="0"/>
+              </g>
+              <g id="jhTrim"></g>
+            </svg>
+            <figcaption id="jhCap"></figcaption>
+          </figure>
+          <div class="jh-text" id="jhText" aria-live="polite"></div>
+          <div class="jh-dots" id="jhDots" role="group" aria-label="Windows in this schedule"></div>
+        </aside>
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- 5. Campus map -->
+  <section class="rr-campus" id="campus" aria-labelledby="campusH">
+    <div class="rr-wrap">
+      <h2 class="rr-h2" id="campusH">Find your way on campus</h2>
+      <div class="lotus" aria-hidden="true"><svg viewBox="0 0 34 22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M17 3c3 3 3.5 8 0 14-3.5-6-3-11 0-14Z"/><path d="M17 17c-3-1-7-4-8-9 4 .5 7 3.5 8 9Z"/><path d="M17 17c3-1 7-4 8-9-4 .5-7 3.5-8 9Z"/><path d="M17 17c-5 1-10-1-13-5 5-1 10 1 13 5Z"/><path d="M17 17c5 1 10-1 13-5-5-1-10 1-13 5Z"/><path d="M8 19.5h18"/></svg></div>
+      <p class="rr-sub">IIT Jodhpur is at Karwar, on NH 62 north of the city. Tap a place in the list to find it on the map, or open it in Google Maps for directions.</p>
+      <div class="cm-grid">
+        <figure class="cm-map" style="margin:0">
+          <svg id="cmSvg" viewBox="__CAMPUS_VB__" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of the IIT Jodhpur campus">
+            <rect x="0" y="0" width="__CAMPUS_W__" height="__CAMPUS_H__" fill="#F3EEE4"/>
+            __CAMPUS_SVG__
+            <g id="cmPins"></g>
+          </svg>
+          <figcaption class="cm-credit">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>. Hostels are shaded lilac.</figcaption>
+        </figure>
+        <ol class="cm-list" id="cmList" aria-label="Places on the map"></ol>
+      </div>
+      <p class="rr-sub cm-note">Not on the map yet: the Tinkering Lab, Chanakya Complex, the Knowledge Tree and the “I Love IITJ” spot aren’t in the map data, so they aren’t pinned. The coordinators will walk you there.</p>
+    </div>
+  </section>
+
+  <!-- 6. Contact -->
+  <section class="rr-contact" id="contact" aria-labelledby="contactH">
+    <div class="rr-wrap">
+      <h2 class="rr-h2" id="contactH">Contact us</h2>
+      <div class="lotus" aria-hidden="true"><svg viewBox="0 0 34 22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M17 3c3 3 3.5 8 0 14-3.5-6-3-11 0-14Z"/><path d="M17 17c-3-1-7-4-8-9 4 .5 7 3.5 8 9Z"/><path d="M17 17c3-1 7-4 8-9-4 .5-7 3.5-8 9Z"/><path d="M17 17c-5 1-10-1-13-5 5-1 10 1 13 5Z"/><path d="M17 17c5 1 10-1 13-5-5-1-10 1-13 5Z"/><path d="M8 19.5h18"/></svg></div>
+      <p class="rr-sub">Ek Bharat Shreshtha Bharat Club, IIT Jodhpur. Different lands, one Bharat.</p>
+      <div class="ct-grid">
+        <div class="ct"><span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M4 21c.6-4.6 3.9-7 8-7s7.4 2.4 8 7Z"/></svg></span><span class="who"><b>Dr. Bhaskar Kumar Kakati</b><span>Nodal Officer</span></span><a class="ph" href="tel:+919854754514"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg></i>+91 98547 54514</a></div>
+        <div class="ct"><span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M4 21c.6-4.6 3.9-7 8-7s7.4 2.4 8 7Z"/></svg></span><span class="who"><b>Mr. Avinash Kumar Chauhan</b><span>EBSB Student Head</span></span><a class="ph" href="tel:+917004020640"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg></i>+91 70040 20640</a></div>
+        <div class="ct"><span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M4 21c.6-4.6 3.9-7 8-7s7.4 2.4 8 7Z"/></svg></span><span class="who"><b>Mr. Dhirendra</b><span>Coordinating Member</span></span><a class="ph" href="tel:+916367482787"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg></i>+91 63674 82787</a></div>
+        <div class="ct"><span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M4 21c.6-4.6 3.9-7 8-7s7.4 2.4 8 7Z"/></svg></span><span class="who"><b>Ms. Subasana Parasar</b><span>Coordinating Member</span></span><a class="ph" href="tel:+917002900581"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg></i>+91 70029 00581</a></div>
+        <div class="ct"><span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M4 21c.6-4.6 3.9-7 8-7s7.4 2.4 8 7Z"/></svg></span><span class="who"><b>Mr. Vedant Dhawale</b><span>Coordinating Member</span></span><a class="ph" href="tel:+917738120024"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg></i>+91 77381 20024</a></div>
+        <div class="ct"><span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M4 21c.6-4.6 3.9-7 8-7s7.4 2.4 8 7Z"/></svg></span><span class="who"><b>Mr. Harsh Mehta</b><span>Coordinating Member</span></span><a class="ph" href="tel:+917567307705"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg></i>+91 75673 07705</a></div>
+        <a class="ct mail" href="mailto:ebsb@iitj.ac.in" style="text-decoration:none"><span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6l8.5 7 8.5-7"/></svg></span><span class="who"><b>ebsb@iitj.ac.in</b><span>Email the EBSB Club</span></span></a>
+      </div>
+      <p class="bharat">A Stronger Bharat Together</p>
+      <div class="tricolour" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+  </section>
+
+  <!-- 7. Links and credits -->
+  <section class="rr-links" aria-label="Useful links">
+    <div class="rr-wrap">
+      <section class="useful" aria-labelledby="usefulH">
+        <h2 id="usefulH">Useful links</h2>
+        <ul>
+          <li><a href="https://ebsb.aicte-india.org" target="_blank" rel="noopener">Yuva Sangam portal</a><span>Registration and programme details</span></li>
+          <li><a href="https://ekbharat.gov.in" target="_blank" rel="noopener">Ek Bharat Shreshtha Bharat</a><span>The national initiative behind Yuva Sangam</span></li>
+          <li><a href="https://iitj.ac.in" target="_blank" rel="noopener">IIT Jodhpur</a><span>Host institution</span></li>
+          <li><a href="https://cus.ac.in" target="_blank" rel="noopener">Sikkim University</a><span>Visiting delegation</span></li>
+          <li><a href="https://www.google.com/maps/search/?api=1&amp;query=IIT+Jodhpur" target="_blank" rel="noopener">IIT Jodhpur on the map</a><span>Karwar, NH 62, Jodhpur</span></li>
+          <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Jodhpur+Railway+Station" target="_blank" rel="noopener">Jodhpur Railway Station</a><span>Arrival and departure point</span></li>
+        </ul>
+        <details class="credits">
+          <summary>Photo credits</summary>
+          <p style="margin-top:6px">All photos are from Wikimedia Commons, used under the licences listed and cropped to fit.</p>
+          <ul id="credits"></ul>
+        </details>
+      </section>
+    </div>
+  </section>
+</main>
+
+<footer class="foot" id="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand">Yuva Sangam, Phase 7</div>
+        <p style="margin-top:8px;color:var(--ink-2);max-width:36ch;">Sikkim × Rajasthan, 2026. Hosted by the EBSB Club, IIT Jodhpur.</p>
+        <p style="margin-top:8px;"><a href="mailto:ebsb@iitj.ac.in">ebsb@iitj.ac.in</a></p>
+        <div class="foot-logos"><img src="__LOGO_MOE__" alt="Ministry of Education"><img src="__LOGO_IITJ__" alt="IIT Jodhpur"><img src="__LOGO_YUVA__" alt="Yuva Sangam"><img src="__LOGO_EBSB__" alt="Ek Bharat Shreshtha Bharat"></div>
+      </div>
+      <div>
+        <h4>On this site</h4>
+        <ul>
+          <li><a href="#schedule/campus">Campus map</a></li>
+          <li><a href="#schedule/contact">Contact us</a></li>
+          <li><a href="#home" data-scroll="route">The route</a></li>
+          <li><a href="#home" data-scroll="week">The week</a></li>
+          <li><a href="#schedule">Schedule</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://ebsb.aicte-india.org" target="_blank" rel="noopener">Yuva Sangam portal</a></li>
+          <li><a href="https://ekbharat.gov.in" target="_blank" rel="noopener">Ek Bharat Shreshtha Bharat</a></li>
+          <li><a href="https://iitj.ac.in" target="_blank" rel="noopener">IIT Jodhpur</a></li>
+          <li><a href="https://cus.ac.in" target="_blank" rel="noopener">Sikkim University</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="credit">Satellite imagery: NASA Earth Observatory, Blue Marble Next Generation (Reto Stöckli). Map outlines: Natural Earth, India point of view. Clouds and illustrations drawn for this site. Campus map data © OpenStreetMap contributors. Photos of Rajasthan from Wikimedia Commons (credits on the schedule page).</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ------------------------------------------------------------------
+     DATA — itinerary. `map` entries become "Open in Maps" links using
+     Google's documented Maps URL format (maps/search/?api=1&query=...).
+     ------------------------------------------------------------------ */
+  var MAPS = function(q){ return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); };
+  /* Itinerary, from "Yuva Sangam 7 Information" (EBSB Club, IIT Jodhpur).
+     item fields: time, icon, title, route (place or movement), detail,
+     map: [[label, Google Maps query]], pin: id on the campus map */
+  var DAYS = [
+    { id:"d0", num:"Day 0", short:"Day 0", name:"Arrival", sub:"A joyous beginning in Jodhpur", pillars:["Parampara","Paraspar Sampark","Pragati"], items:[
+      { icon:"train", title:"Arrival at Jodhpur", route:"Jodhpur Railway Station to IIT Jodhpur", detail:"Delegates are received at Jodhpur Railway Station with a warm welcome and brought to the IIT Jodhpur campus for accommodation. A joyous start to the Yuva Sangam journey!", map:[["Jodhpur Railway Station","Jodhpur Railway Station"],["IIT Jodhpur","IIT Jodhpur"]] }
+    ]},
+    { id:"d1", num:"Day 1", short:"Day 1", name:"Inauguration and the campus", sub:"A joyous beginning in Jodhpur", pillars:["Parampara","Paraspar Sampark","Prodyogiki","Pragati"], items:[
+      { time:"10:30", icon:"people", title:"Inauguration by the Director, IIT Jodhpur", route:"Jodhpur Club", detail:"Participants reach Jodhpur Club by 10:30 for the inauguration ceremony.", pin:"club" },
+      { time:"13:30–14:30", icon:"meal", title:"Lunch", route:"IIT Jodhpur Mess", detail:"Lunch at IIT Jodhpur Mess.", pin:"mess" },
+      { time:"15:00", icon:"gear", title:"Tinkering Lab visit", route:"Tinkering Lab", detail:"Gather at I Love IITJ by 14:45 and reach the Tinkering Lab by 15:00." },
+      { time:"15:30", icon:"atom", title:"JCKIF and Hydrogen Valley", route:"E-6 and E-9 Berm", detail:"Reach JCKIF by 15:30, followed by Hydrogen Valley.", pin:"berms" },
+      { time:"16:30", icon:"building", title:"Chanakya Complex", route:"Chanakya Complex", detail:"Reach Chanakya Complex by 16:30, and enter the tunnel by 17:00 for Shamiyana." },
+      { time:"17:00", icon:"campus", title:"Shamiyana and academic buildings", route:"Shamiyana", detail:"Enter the tunnel from Chanakya Complex for Shamiyana. Snacks at Shamiyana.", pin:"shamiyana" },
+      { time:"17:15", icon:"cup", title:"Snacks", route:"Shamiyana", detail:"Finish snacks by 17:15.", pin:"shamiyana" },
+      { time:"18:30", icon:"run", title:"Departments → Rural Project → Sports Complex → Knowledge Tree", route:"Knowledge Tree", detail:"Reach Knowledge Tree by 18:30." },
+      { icon:"people", title:"Jodhpur Club", route:"Jodhpur Club", detail:"Reach Jodhpur Club afterwards for practice sessions and interactions.", pin:"club" },
+      { time:"21:30", icon:"dinner", title:"Dinner", route:"IIT Jodhpur Mess", detail:"Dinner at the Mess (9:30 pm).", pin:"mess" }
+    ]},
+    { id:"d2", num:"Day 2", short:"Day 2", name:"The Blue City and Mehrangarh", sub:"A journey through heritage and harmony", pillars:["Paryatan","Paraspar Sampark"], items:[
+      { time:"06:00", icon:"yoga", title:"Yoga, meditation, biodiversity walk and shramdaan", route:"IIT Jodhpur Sports Complex and Jungle Walk", detail:"A fresh start with yoga and meditation, followed by shramdaan at IIT Jodhpur.", pin:"sports" },
+      { time:"07:30", icon:"cup", title:"Breakfast", route:"IIT Jodhpur Mess", detail:"Breakfast at the Mess, fuelling up for the adventures ahead.", pin:"mess" },
+      { time:"09:30", icon:"bus", title:"Blue City walk and Clock Tower market area", route:"Ghanta Ghar (Clock Tower)", detail:"Leave campus by bus and reach the Clock Tower market area by 9:30, for a heritage walk through the famous Blue City architecture.", map:[["Ghanta Ghar","Ghanta Ghar, Jodhpur"]] },
+      { time:"10:15", icon:"fort", title:"Mehrangarh Fort", route:"Mehrangarh Fort", detail:"Reach Mehrangarh Fort by 10:15. One of the largest forts in Rajasthan, with stunning views and a real sense of history.", map:[["Mehrangarh Fort","Mehrangarh Fort, Jodhpur"]] },
+      { time:"13:30–15:00", icon:"meal", title:"Lunch", route:"Nearby market (Clock Tower)", detail:"Reach the Clock Tower by 13:30 and finish lunch by 15:00." },
+      { time:"15:15", icon:"bag", title:"Market", route:"Clock Tower", detail:"The bustling atmosphere of the market, with local snacks and shopping.", map:[["Sardar Market","Sardar Market, Jodhpur"]] },
+      { time:"18:00", icon:"bus", title:"Snacks and return to campus", route:"IIT Jodhpur campus", detail:"Finish snacks by 18:00 and leave for campus." },
+      { time:"21:00", icon:"dinner", title:"Dinner", route:"IIT Jodhpur Mess", detail:"Dinner at the Mess at 21:00.", pin:"mess" }
+    ]},
+    { id:"d3", num:"Day 3", short:"Day 3", name:"Umaid Bhawan or Akshardham, and Osian", sub:"Spiritual roots, desert horizons", pillars:["Parampara","Paryatan","Paraspar Sampark"], items:[
+      { time:"06:00", icon:"tree", title:"Yoga, meditation and tree plantation (Ek Ped Maa Ke Naam)", route:"Sports Complex", detail:"A fresh start with yoga and meditation, followed by tree plantation at IIT Jodhpur at 7:00.", pin:"sports" },
+      { time:"08:00", icon:"cup", title:"Breakfast", route:"IIT Jodhpur Mess", detail:"Breakfast at IIT Jodhpur, fuelling up for the adventure that awaits. Reach the Mess by 8:00.", pin:"mess" },
+      { time:"09:30", icon:"palace", title:"Umaid Bhawan Palace or Akshardham Temple", route:"IIT Jodhpur campus to Umaid Bhawan or Akshardham Temple", detail:"Leave campus by 8:45. A meeting with His Highness Maharaja Gaj Singh Ji at Umaid Bhawan, or a visit to Akshardham Temple.", map:[["Umaid Bhawan Palace","Umaid Bhawan Palace, Jodhpur"],["Akshardham Temple","BAPS Swaminarayan Akshardham, Jodhpur"]] },
+      { time:"12:30", icon:"meal", title:"Lunch", route:"Umaid Bhawan or Akshardham Temple", detail:"A delightful lunch." },
+      { time:"15:00", icon:"dunes", title:"Sand dunes of Osian, with visits to historical temples", route:"Osian", detail:"Leave for Osian by 13:30. Wander through Osian’s historical temples, then out onto the golden sands for a jeep safari and camel ride. Watch the sunset over the dunes with snacks, and begin the return journey after sunset.", map:[["Osian temples","Sachiya Mata Temple, Osian"],["Osian sand dunes","Osian sand dunes, Rajasthan"]] },
+      { time:"21:00", icon:"dinner", title:"Dinner", route:"IIT Jodhpur Mess", detail:"Dinner at the Mess at 21:00.", pin:"mess" }
+    ]},
+    { id:"d4", num:"Day 4", short:"Day 4", name:"Village life and Mandore", sub:"", pillars:["Parampara","Paraspar Sampark","Pragati"], items:[
+      { time:"06:00", icon:"yoga", title:"Yoga, meditation and shramdaan", route:"IIT Jodhpur", detail:"Yoga and meditation at 6:00, followed by shramdaan at 7:00." },
+      { time:"07:30", icon:"cup", title:"Breakfast", route:"IIT Jodhpur Mess", detail:"Reach the Mess by 7:30 and get ready to experience Rajasthani culture.", pin:"mess" },
+      { time:"10:00", icon:"bus", title:"Village visit", route:"IIT Jodhpur to the village", detail:"Arrive by 10:00 at a village known for its traditional Rajasthani culture." },
+      { time:"13:00", icon:"loom", title:"Village visit: weavers, dance and lunch", route:"The village", detail:"Meet dhurrie weavers to learn about their craft, and join a traditional Rajasthani dance workshop. Traditional lunch at 13:00." },
+      { time:"15:00", icon:"cenotaph", title:"Mandore Garden", route:"Village to Mandore Garden", detail:"Arrive by 15:00 and explore the gardens and historic cenotaphs. A light snack, and the evening light and sound show at 19:00. Leave for IIT Jodhpur by 20:00.", map:[["Mandore Garden","Mandore Garden, Jodhpur"]] },
+      { time:"21:00", icon:"dinner", title:"Dinner", route:"IIT Jodhpur Mess", detail:"Dinner at the Mess.", pin:"mess" }
+    ]},
+    { id:"d5", num:"Day 5", short:"Day 5", name:"Valedictory function and cultural performances", sub:"Celebrating connections, inspiring futures", pillars:["Parampara","Paraspar Sampark"], items:[
+      { time:"08:00", icon:"cup", title:"Breakfast", route:"IIT Jodhpur", detail:"Start the day with a nutritious breakfast at IIT Jodhpur.", pin:"mess" },
+      { icon:"pen", title:"Feedback and review essay", route:"IIT Jodhpur", detail:"A review essay on Yuva Sangam Phase 7, followed by experience sharing." },
+      { icon:"music", title:"Rehearsal", route:"IIT Jodhpur", detail:"Rehearsal for the upcoming performance." },
+      { icon:"meal", title:"Lunch", route:"IIT Jodhpur" },
+      { icon:"music", title:"Performance by Sikkim students", route:"Gandhi Jayanti celebration, Jodhpur", detail:"The Sikkim delegation performs at the Gandhi Jayanti celebration in Jodhpur." },
+      { icon:"cert", title:"Scribbling and certificates", route:"IIT Jodhpur", detail:"The day concludes with scribbling and certificate distribution." }
+    ]}
+  ];
+
+  /* ------------------------------------------------------------------
+     Helpers
+     ------------------------------------------------------------------ */
+  var $ = function(id){ return document.getElementById(id); };
+  var clamp = function(v,a,b){ return Math.min(b, Math.max(a, v)); };
+  var seg = function(p,a,b){ return clamp((p-a)/(b-a), 0, 1); };          // 0..1 within [a,b]
+  var ease = function(t){ return t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }; // easeInOutQuad
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  var pinSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
+
+
+  /* ------------------------------------------------------------------
+     Home: day index (links into the schedule)
+     ------------------------------------------------------------------ */
+  var idx = $('dayIndex');
+  DAYS.forEach(function(d){
+    var li = document.createElement('li');
+    li.innerHTML = '<a href="#schedule/' + d.id + '"><span class="dn">' + esc(d.short) + '</span><span class="dl">' + esc(d.name) + '<span class="dd">' + esc(d.pillars.join(', ')) + '</span></span></a>';
+    idx.appendChild(li);
+  });
+
+  /* ------------------------------------------------------------------
+     PHOTOS — Wikimedia Commons, embedded at build time.
+     key -> { w: window crop, c: chip crop, cap, author, lic, page }
+     ------------------------------------------------------------------ */
+  var PH = __PHOTOS__;
+
+  /* ------------------------------------------------------------------
+     WINDOWS — one per schedule stop that opens onto something about
+     Rajasthan. `ev` is the schedule row ('dayId-index') it belongs to.
+     `tag` says how far away the subject is from where the group is.
+     ------------------------------------------------------------------ */
+  var WINDOWS = [
+    { ev:'d0-0', photo:'jaswant',    k:'--c-sun',   tag:'Here in Jodhpur',        place:'Jodhpur',
+      title:'Welcome to the Sun City',
+      text:'Rao Jodha founded Jodhpur in 1459, and bright sunshine for most of the year has earned it the name Sun City. The old capital of Marwar is full of landmarks, from Mehrangarh on its hill to the white marble Jaswant Thada, built in 1899.' },
+    { ev:'d1-0', photo:'welcome',    k:'--c-sun',   tag:'Across Rajasthan',       place:'The Thar',
+      title:'“Padharo mhare des”',
+      text:'Come to my land: the refrain of “Kesariya Balam”, a Maand folk song and Rajasthan’s best-known welcome. In the Thar, hereditary Manganiyar and Langa musicians have carried songs like it down the generations.' },
+    { ev:'d1-2', photo:'jantar',     k:'--c-gold',  tag:'Elsewhere in Rajasthan', place:'Jaipur',
+      title:'Instruments built of stone',
+      text:'Long before tinkering labs, Maharaja Sawai Jai Singh II built Jantar Mantar in Jaipur, in the early 18th century. Its Samrat Yantra is the world’s largest stone sundial, and the observatory is a UNESCO World Heritage Site.' },
+    { ev:'d1-3', photo:'bhadla',     k:'--c-sun',   tag:'Elsewhere in Rajasthan', place:'Bhadla, in the Thar',
+      title:'The sun, harvested',
+      text:'The sunshine that names Jodhpur now powers the country. Bhadla Solar Park, in the Thar northwest of Jodhpur, is one of the largest solar parks in the world.' },
+    { ev:'d1-4', photo:'abu',        k:'--c-lake',  tag:'Elsewhere in Rajasthan', place:'Mount Abu and Udaipur',
+      title:'Watching the sky',
+      text:'Dry air and clear nights make Rajasthan good for astronomy. The Physical Research Laboratory runs an infrared observatory near Guru Shikhar on Mount Abu, and a solar observatory on an island in Udaipur’s Fateh Sagar lake.' },
+    { ev:'d1-7', photo:'pokhran',    k:'--c-gold',  tag:'Elsewhere in Rajasthan', place:'Pokhran',
+      title:'Pokhran, 1974 and 1998',
+      text:'India carried out its nuclear tests in the Thar near Pokhran: the first in May 1974, and Pokhran-II in May 1998. The 1998 tests are why 11 May is marked as National Technology Day.' },
+    { ev:'d2-0', photo:'tiger',      k:'--c-green', tag:'Across Rajasthan',       place:'Ranthambore and Jawai',
+      title:'Tigers and leopards',
+      text:'Rajasthan is not only sand. Tigers hunt among the ruins of Ranthambore’s thousand-year-old fort, and in Jawai, leopards live on granite hills beside the villages of Rabari herders.' },
+    { ev:'d2-2', photo:'blue',       k:'--c-blue',  tag:'On today’s route',       place:'Old Jodhpur',
+      title:'Why the city is blue',
+      text:'The houses of Jodhpur’s old town, crowded below Mehrangarh, are washed in shades of indigo. Seen from the fort, the whole city turns blue, and that is how it became the Blue City.' },
+    { ev:'d2-3', photo:'mehrangarh', k:'--c-sun',   tag:'On today’s route',       place:'Mehrangarh, Jodhpur',
+      title:'Forts on every ridge',
+      text:'Mehrangarh stands on a rocky hill about 125 m above the city. Across the state, six hill forts, among them Chittorgarh, Kumbhalgarh and Jaisalmer, together form a UNESCO World Heritage Site.' },
+    { ev:'d2-4', photo:'clocktower', k:'--c-blue',  tag:'On today’s route',       place:'Ghanta Ghar, Jodhpur',
+      title:'A clock over the market',
+      text:'Jodhpur’s Ghanta Ghar was built by Maharaja Sardar Singh, who ruled from 1895 to 1911, and Sardar Market grew up around it. It is still the easiest place to meet in the old city.' },
+    { ev:'d2-5', photo:'food',       k:'--c-pink',  tag:'On today’s route',       place:'Jodhpur',
+      title:'Food built for the desert',
+      text:'Desert kitchens rely on what keeps: millet, gram flour, dried ker and sangri, ghee and buttermilk. Around the Clock Tower, try Jodhpur’s mirchi bada and makhaniya lassi; dal baati churma is the dish all of Rajasthan claims.' },
+    { ev:'d3-0', photo:'khejri',     k:'--c-green', tag:'Near Jodhpur',           place:'Khejarli',
+      title:'People who gave their lives for trees',
+      text:'In 1730 at Khejarli, near Jodhpur, 363 Bishnois led by Amrita Devi died trying to stop khejri trees being felled. The khejri is now Rajasthan’s state tree, and the Bishnoi still protect blackbuck and chinkara.' },
+    { ev:'d3-2', photo:'umaid',      k:'--c-gold',  tag:'On today’s route',       place:'Umaid Bhawan, Jodhpur',
+      title:'A palace that is still a home',
+      text:'Umaid Bhawan was built between 1929 and 1943 for Maharaja Umaid Singh, partly to give people work during a famine. It is one of the largest private residences in the world: part of it is a hotel and a museum, and the royal family still lives there.' },
+    { ev:'d3-4', photo:'dunes',      k:'--c-gold',  tag:'On today’s route',       place:'Osian, in the Thar',
+      title:'Sand and stone at Osian',
+      text:'Osian was a stop on old caravan routes across the Thar, and its temples, from the 8th century onwards, are among the oldest in Rajasthan. The same carving tradition runs through the marble of Dilwara on Mount Abu and the 1,444 pillars of Ranakpur.' },
+    { ev:'d4-2', photo:'canal',      k:'--c-green', tag:'Elsewhere in Rajasthan', place:'Sri Ganganagar',
+      title:'Green in the desert',
+      text:'Not all of Rajasthan is dry. The Indira Gandhi Canal carries river water from Punjab deep into the Thar, and the fields and kinnow orchards of Sri Ganganagar have earned it the name “food basket of Rajasthan”.' },
+    { ev:'d4-3', photo:'crafts',     k:'--c-pink',  tag:'Across Rajasthan',       place:'Villages and bazaars',
+      title:'Colour you can wear',
+      text:'Bandhej and leheriya tie-dye, block prints from Bagru and Sanganer, and dhurries from weaving villages such as Salawas near Jodhpur. A turban’s colours and wrap can tell you where its wearer comes from.' },
+    { ev:'d4-4', photo:'udaipur',    k:'--c-lake',  tag:'Elsewhere in Rajasthan', place:'Udaipur and Mount Abu',
+      title:'Lakes, and a hill station',
+      text:'Mandore’s gardens were a green retreat for Marwar’s rulers. In the south, Udaipur, the City of Lakes, rises around Pichola and Fateh Sagar, and Mount Abu, Rajasthan’s only hill station, climbs to Guru Shikhar, 1,722 m, the highest point of the Aravallis.' },
+    { ev:'d5-4', photo:'dance',      k:'--c-pink',  tag:'Across Rajasthan',       place:'Rajasthan',
+      title:'Ghoomar and Kalbeliya',
+      text:'Ghoomar’s spinning skirts and Kalbeliya’s quick, fluid steps are Rajasthan’s best-known dances. Kalbeliya songs and dances were inscribed on UNESCO’s list of Intangible Cultural Heritage in 2010.' },
+    { ev:'d5-5', photo:'jaisalmer',  k:'--c-gold',  tag:'Next time',              place:'Rajasthan',
+      title:'Every glance, a window into history',
+      text:'Still waiting for the next visit: the Pink City of Jaipur, the lakes of Udaipur, Jaisalmer’s golden fort, the tigers of Ranthambore and the cool hills of Mount Abu.' }
+  ];
+  var WIN_OF = {}; WINDOWS.forEach(function(w, i){ w.i = i; WIN_OF[w.ev] = w; });
+  function colorOf(w){ return getComputedStyle(document.documentElement).getPropertyValue(w.k).trim() || '#B48A2C'; }
+
+  /* ------------------------------------------------------------------
+     Jharokha geometry: a pointed arch whose inner edge is cusped
+     (a row of small lobes), the characteristic Rajput window opening.
+     ------------------------------------------------------------------ */
+  function cubicAt(p0, p1, p2, p3, t){
+    var u = 1 - t;
+    return [u*u*u*p0[0] + 3*u*u*t*p1[0] + 3*u*t*t*p2[0] + t*t*t*p3[0],
+            u*u*u*p0[1] + 3*u*u*t*p1[1] + 3*u*t*t*p2[1] + t*t*t*p3[1]];
+  }
+  // x0..x1 opening width, s = springing line, a = apex y, b = bottom, lobes per side (0 = smooth)
+  function archPath(x0, x1, s, a, b, lobes){
+    var xm = (x0 + x1) / 2, hw = (x1 - x0) / 2, rise = s - a;
+    var L = [[x0, s], [x0, s - rise*.62], [xm - hw*.42, a + rise*.06], [xm, a]];
+    var R = [[xm, a], [xm + hw*.42, a + rise*.06], [x1, s - rise*.62], [x1, s]];
+    var d = 'M' + x0 + ',' + b + ' L' + x0 + ',' + s;
+    if(!lobes){
+      d += ' C' + L[1] + ' ' + L[2] + ' ' + L[3] + ' C' + R[1] + ' ' + R[2] + ' ' + R[3];
+    } else {
+      [L, R].forEach(function(C){
+        var prev = C[0];
+        for(var i = 1; i <= lobes; i++){
+          var p = cubicAt(C[0], C[1], C[2], C[3], i / lobes);
+          var mx = (prev[0] + p[0]) / 2, my = (prev[1] + p[1]) / 2;
+          var dx = mx - xm, dy = my - s, n = Math.hypot(dx, dy) || 1;      // push the lobe outward
+          var bulge = Math.hypot(p[0] - prev[0], p[1] - prev[1]) * .42;
+          d += ' Q' + (mx + dx/n*bulge).toFixed(1) + ',' + (my + dy/n*bulge).toFixed(1) + ' ' + p[0].toFixed(1) + ',' + p[1].toFixed(1);
+          prev = p;
+        }
+      });
+    }
+    return d + ' L' + x1 + ',' + b + ' Z';
+  }
+  // The frame drawn around a window of the given box (used by the big and the inline windows)
+  function frameMarkup(x0, x1, s, a, b, lobes){
+    var outer = archPath(x0 - 26, x1 + 26, s, a - 30, b + 18, 0);
+    var mid   = archPath(x0 - 12, x1 + 12, s, a - 14, b + 6, 0);
+    return {
+      frame: '<path d="' + outer + '" style="fill:var(--wc)" opacity=".16"/>' +
+             '<path d="' + outer + '" fill="url(#PAT)" style="color:var(--wc)" opacity=".55"/>' +
+             '<path d="' + outer + '" fill="none" style="stroke:var(--wc)" stroke-width="2"/>',
+      trim:  '<path d="' + mid + '" fill="none" style="stroke:var(--wc)" stroke-width="1.2" opacity=".7"/>' +
+             '<path d="' + archPath(x0, x1, s, a, b, lobes) + '" fill="none" style="stroke:var(--wc)" stroke-width="2.4"/>' +
+             // sill and finial
+             '<rect x="' + (x0 - 34) + '" y="' + (b + 16) + '" width="' + (x1 - x0 + 68) + '" height="10" rx="2" style="fill:var(--wc)" opacity=".85"/>' +
+             '<circle cx="' + ((x0 + x1)/2) + '" cy="' + (a - 42) + '" r="6" style="fill:var(--wc)"/>' +
+             '<path d="M' + ((x0 + x1)/2) + ',' + (a - 36) + ' v8" style="stroke:var(--wc)" stroke-width="2"/>'
+    };
+  }
+
+  // big window: opening 44..356 wide, apex at 56, springing at 176, sill at 440
+  (function(){
+    var f = frameMarkup(44, 356, 176, 56, 436, 7);
+    $('jhOpening').setAttribute('d', archPath(44, 356, 176, 56, 436, 7));
+    $('jhFrame').innerHTML = f.frame.replace(/PAT/g, 'jhJaali');
+    $('jhTrim').innerHTML = f.trim;
+  })();
+
+  /* ------------------------------------------------------------------
+     Schedule days (with a small window mark on rows that open one)
+     ------------------------------------------------------------------ */
+  var jhIcon = '<svg class="jh-ico" viewBox="0 0 18 22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 21V9C2 5 5 2.5 9 1c4 1.5 7 4 7 8v12Z"/><path d="M2 21h14"/></svg>';
+  // activity icons (24×24 line drawings), in the spirit of the printed itinerary
+  var ACT = {
+    train:   '<rect x="6" y="3" width="12" height="13" rx="3"/><path d="M6 10h12M9 20l-2 2M15 20l2 2M8.5 13h.01M15.5 13h.01"/><path d="M8 16l-1 4h10l-1-4"/>',
+    people:  '<circle cx="8" cy="8" r="2.6"/><circle cx="16" cy="8" r="2.6"/><path d="M3 19c.5-3.2 2.5-5 5-5s4.5 1.8 5 5M11 19c.5-3.2 2.5-5 5-5s4.5 1.8 5 5"/>',
+    meal:    '<path d="M7 3v8M5 3v4a2 2 0 0 0 4 0V3M7 11v10"/><path d="M17 21V3c-2 1-3 4-3 7h3"/>',
+    dinner:  '<circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="3.4"/><path d="M3 4v6M3 12v8M21 4c-1.5 1-2 3-2 6h2v10"/>',
+    cup:     '<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5Z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 3c-1 1.2 1 2 0 3.5M12 3c-1 1.2 1 2 0 3.5"/>',
+    gear:    '<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1M18.7 18.7l-2.1-2.1M7.4 7.4 5.3 5.3"/>',
+    atom:    '<circle cx="12" cy="12" r="1.6"/><ellipse cx="12" cy="12" rx="9" ry="3.6"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(-60 12 12)"/>',
+    building:'<path d="M4 21V8l8-4 8 4v13"/><path d="M9 21v-5h6v5M8 11h2M14 11h2M3 21h18"/>',
+    campus:  '<path d="M3 21h18M5 21V10h14v11M3 10l9-6 9 6"/><path d="M9 21v-6h6v6"/>',
+    run:     '<circle cx="14" cy="4.5" r="2"/><path d="M6 21l3.5-5 3 2 1.5-5 3 3h3M9.5 12l1.5-4 4 1.5"/>',
+    yoga:    '<circle cx="12" cy="5" r="2.2"/><path d="M12 8v5M5 11l7 2 7-2M6 20c2-3 4-4 6-4s4 1 6 4H6Z"/>',
+    tree:    '<path d="M12 21v-7"/><path d="M12 14c-4 0-7-2.5-7-6a5 5 0 0 1 9-3 4 4 0 0 1 5 4c0 3-3 5-7 5Z"/><path d="M8 21h8"/>',
+    bus:     '<rect x="4" y="3" width="16" height="14" rx="3"/><path d="M4 11h16M8 21v-4M16 21v-4M7.5 14h.01M16.5 14h.01M9 6h6"/>',
+    fort:    '<path d="M3 21V9h3V6h2v3h2V6h4v3h2V6h2v3h3v12Z"/><path d="M10 21v-4a2 2 0 0 1 4 0v4"/>',
+    bag:     '<path d="M5 8h14l-1 13H6Z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/>',
+    palace:  '<path d="M4 21V12h16v9M2 21h20M12 3c2.5 1.5 4 3.5 4 6H8c0-2.5 1.5-4.5 4-6Z"/><path d="M12 1.5v1.5M8 12V9M16 12V9M10 21v-4a2 2 0 0 1 4 0v4"/>',
+    dunes:   '<circle cx="17" cy="6" r="2.6"/><path d="M2 16c3.5-3.5 7-3.5 10 0s6 3 10-1M2 20.5c4-2 9-2 13 0"/>',
+    loom:    '<rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M4 8h16M4 13h16M4 18h16M9 3v18M15 3v18"/>',
+    cenotaph:'<path d="M5 21v-9h14v9M3 21h18M12 4c3 1.5 5 4 5 8H7c0-4 2-6.5 5-8Z"/><path d="M12 2v2M9 21v-5M15 21v-5"/>',
+    pen:     '<path d="M4 20l1-5L16 4l4 4L9 19Z"/><path d="M14 6l4 4"/>',
+    music:   '<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
+    cert:    '<rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M7 8h10M7 11h6"/><circle cx="16" cy="15" r="2.2"/><path d="M15 17l-1 4 2-1 2 1-1-4"/>'
+  };
+  function actIcon(k){ return '<span class="ev-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + (ACT[k] || ACT.people) + '</svg></span>'; }
+  var campusSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3Z"/><path d="M9 3v15M15 6v15"/></svg>';
+
+  var daysEl = $('days'), jump = $('dayJump');
+  DAYS.forEach(function(d){
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = d.short; b.dataset.day = d.id;
+    jump.appendChild(b);
+
+    var sec = document.createElement('section');
+    sec.className = 'day'; sec.id = 'day-' + d.id;
+    var evs = d.items.map(function(it, i){
+      var key = d.id + '-' + i, w = WIN_OF[key];
+      var links = (it.map || []).map(function(m){
+        return '<a class="map-link" href="' + MAPS(m[1]) + '" target="_blank" rel="noopener">' + pinSvg + esc(m[0]) + '</a>';
+      }).join('');
+      if(it.pin) links += '<button type="button" class="map-link campus-link" data-pin="' + it.pin + '">' + campusSvg + 'On the campus map</button>';
+      return '<div class="ev' + (w ? ' has-win' : '') + '" id="ev-' + key + '"' + (w ? ' data-win="' + w.i + '"' : '') + '>' +
+        '<div class="ev-time' + (it.time ? '' : ' none') + '"><span>' + esc(it.time || 'Time to be set') + '</span></div>' +
+        '<div class="ev-body">' + actIcon(it.icon) + '<div class="ev-main"><div class="ev-title"><span>' + esc(it.title) + '</span>' + (w ? jhIcon : '') + '</div>' +
+        (it.route ? '<div class="ev-route">' + esc(it.route) + '</div>' : '') +
+        (it.detail ? '<p class="ev-detail">' + esc(it.detail) + '</p>' : '') +
+        (links ? '<div class="ev-links">' + links + '</div>' : '') +
+        '</div></div></div>';
+    }).join('');
+    sec.innerHTML = '<div class="day-h"><h3>' + esc(d.num) + '</h3><span class="name">' + esc(d.name) + '</span></div>' +
+      (d.sub ? '<p class="day-sub">' + esc(d.sub) + '</p>' : '') +
+      '<div class="day-pillars">' + d.pillars.map(function(p){ return '<span>' + esc(p) + '</span>'; }).join('') + '</div>' + evs;
+    daysEl.appendChild(sec);
+  });
+  // colour each window row in its window's colour
+  WINDOWS.forEach(function(w){ var e = $('ev-' + w.ev); if(e) e.style.setProperty('--wc', 'var(' + w.k + ')'); });
+
+  function credit(p){
+    return 'Photo: ' + esc(p.cap) + '. <a href="' + p.page + '" target="_blank" rel="noopener">' + esc(p.author) + ', ' + esc(p.lic) + '</a>';
+  }
+
+  /* ------------------------------------------------------------------
+     The sticky window: follows whichever window row the reader is on.
+     ------------------------------------------------------------------ */
+  var aside = $('winAside'), jhA = $('jhA'), jhB = $('jhB'), front = jhA, curWin = -1;
+  var dots = $('jhDots');
+  WINDOWS.forEach(function(w){
+    var b = document.createElement('button'); b.type = 'button'; b.dataset.i = w.i;
+    b.setAttribute('aria-label', w.title); b.title = w.title;
+    dots.appendChild(b);
+  });
+  function dayLabel(ev){ var id = ev.split('-')[0]; for(var i = 0; i < DAYS.length; i++){ if(DAYS[i].id === id) return DAYS[i].num; } return ''; }
+  function evTitle(ev){ var p = ev.split('-'); for(var i = 0; i < DAYS.length; i++){ if(DAYS[i].id === p[0]) return DAYS[i].items[+p[1]].title; } return ''; }
+
+  function showWin(i){
+    if(i === curWin) return; curWin = i;
+    var w = WINDOWS[i], p = PH[w.photo];
+    aside.style.setProperty('--wc', 'var(' + w.k + ')');
+    // cross-fade: load into the hidden image, then swap
+    var back = front === jhA ? jhB : jhA;
+    back.setAttribute('href', p.w); back.setAttribute('opacity', '1'); front.setAttribute('opacity', '0'); front = back;
+    $('jhAlt').textContent = p.cap;
+    $('jhCap').innerHTML = credit(p);
+    var t = $('jhText');
+    t.innerHTML = '<span class="jh-tag">' + esc(w.tag) + '</span><span class="jh-place">' + esc(w.place) + '</span>' +
+      '<h4>' + esc(w.title) + '</h4><p>' + esc(w.text) + '</p>';
+    t.classList.remove('swap'); void t.offsetWidth; if(!reduce) t.classList.add('swap');
+    dots.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', +b.dataset.i === i); });
+    document.querySelectorAll('.ev.lit').forEach(function(e){ e.classList.remove('lit'); });
+    var row = $('ev-' + w.ev); if(row) row.classList.add('lit');
+  }
+  dots.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    var row = $('ev-' + WINDOWS[+b.dataset.i].ev);
+    if(row) row.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'center' });
+  });
+
+  var winRows = [];
+  function pickWin(){
+    if(!$('view-schedule').classList.contains('active')) return;
+    if(window.innerWidth < 1000) return;                    // narrow screens use inline windows
+    if(!winRows.length) winRows = Array.prototype.slice.call(document.querySelectorAll('.ev.has-win'));
+    var line = window.innerHeight * .5, pick = 0;
+    for(var i = 0; i < winRows.length; i++){
+      if(winRows[i].getBoundingClientRect().top < line) pick = +winRows[i].dataset.win; else break;
+    }
+    showWin(pick);
+  }
+  var winTick = false;
+  window.addEventListener('scroll', function(){ if(winTick) return; winTick = true; requestAnimationFrame(function(){ winTick = false; pickWin(); }); }, { passive:true });
+  window.addEventListener('resize', function(){ pickWin(); buildMinis(); });
+
+  /* ------------------------------------------------------------------
+     Inline windows for narrow screens, built only when first needed
+     ------------------------------------------------------------------ */
+  var minisBuilt = false;
+  function buildMinis(){
+    if(minisBuilt || window.innerWidth >= 1000) return; minisBuilt = true;
+    var mf = frameMarkup(40, 360, 150, 40, 300, 7);
+    WINDOWS.forEach(function(w){
+      var row = $('ev-' + w.ev), p = PH[w.photo]; if(!row) return;
+      var id = 'mc' + w.i;
+      var fig = document.createElement('figure');
+      fig.className = 'jh-mini'; fig.style.setProperty('--wc', 'var(' + w.k + ')');
+      fig.innerHTML =
+        '<svg viewBox="0 -8 400 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + esc(p.cap) + '">' +
+          '<defs><clipPath id="' + id + '"><path d="' + archPath(40, 360, 150, 40, 300, 7) + '"/></clipPath>' +
+          '<pattern id="' + id + 'p" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M9,0 L18,9 L9,18 L0,9Z" fill="none" stroke="currentColor" stroke-width=".9"/><circle cx="9" cy="9" r="1.4" fill="currentColor"/></pattern></defs>' +
+          mf.frame.replace(/PAT/g, id + 'p') +
+          '<g clip-path="url(#' + id + ')"><image href="' + p.w + '" x="40" y="30" width="320" height="272" preserveAspectRatio="xMidYMid slice"/></g>' +
+          mf.trim +
+        '</svg>' +
+        '<div class="mt"><span class="jh-tag">' + esc(w.tag) + '</span><span class="jh-place">' + esc(w.place) + '</span>' +
+        '<h4>' + esc(w.title) + '</h4><p>' + esc(w.text) + '</p><span class="cr">' + credit(p) + '</span></div>';
+      row.appendChild(fig);
+    });
+  }
+  buildMinis();
+
+  /* ------------------------------------------------------------------
+     Hero: "Rangilo" set in the colours of Rajasthan's cities
+     ------------------------------------------------------------------ */
+  (function(){
+    var el = $('rangilo'), cols = ['--c-pink','--c-blue','--c-sun','--c-lake','--c-gold','--c-green','--c-pink'];
+    el.innerHTML = 'Rangilo'.split('').map(function(ch, i){ return '<span aria-hidden="true" style="color:var(' + cols[i] + ')">' + ch + '</span>'; }).join('');
+  })();
+
+  /* ------------------------------------------------------------------
+     More than a desert — sentences with small photo chips
+     ------------------------------------------------------------------ */
+  (function(){
+    function chip(k, col){ return '<span class="chip" role="img" aria-label="' + esc(PH[k].cap) + '" style="background-image:url(' + PH[k].c + ');--k:var(' + col + ')"></span>'; }
+    var L = [
+      ['From', chip('tiger','--c-green'), 'tigers in Ranthambore', 'to', chip('leopard','--c-green'), 'leopards in Jawai.'],
+      ['From', chip('dunes','--c-gold'), 'the dunes of the Thar', 'to', chip('udaipur','--c-lake'), 'the lakes of Udaipur.'],
+      ['From', chip('canal','--c-green'), 'the canal-fed orchards of Sri Ganganagar', 'to', chip('abu','--c-lake'), 'the cool hills of Mount Abu.'],
+      ['From', chip('jaisalmer','--c-gold'), 'forts on every ridge', 'to', chip('temples','--c-gold'), 'temples carved a thousand years ago.'],
+      ['From', chip('pokhran','--c-sun'), 'the test range at Pokhran', 'to', chip('jantar','--c-gold'), 'Jaipur’s Jantar Mantar and the observatories of Abu and Udaipur.']
+    ];
+    $('fromTo').innerHTML = L.map(function(l){
+      return '<p class="ft-line"><span class="w">' + l[0] + '</span> ' + l[1] + l[2] + ' <span class="w">' + l[3] + '</span> ' + l[4] + l[5] + '</p>';
+    }).join('');
+  })();
+
+  /* ------------------------------------------------------------------
+     Photo credits list
+     ------------------------------------------------------------------ */
+  $('credits').innerHTML = Object.keys(PH).map(function(k){
+    var p = PH[k];
+    return '<li>' + esc(p.cap) + ': <a href="' + p.page + '" target="_blank" rel="noopener">' + esc(p.author) + '</a>, ' + esc(p.lic) + '</li>';
+  }).join('');
+
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-go]'); if(!b) return;
+    var t = $(b.dataset.go); if(t) t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'start' });
+  });
+
+  /* ------------------------------------------------------------------
+     Campus map (OpenStreetMap data, drawn at build time). Pins come from
+     named OSM features; `use` says what the stop is for in the schedule.
+     ------------------------------------------------------------------ */
+  var CP = __CAMPUS_PINS__;
+  var PLACES = [
+    { id:'club',      name:'Jodhpur Club',       use:'Inauguration on Day 1, and practice sessions', pins:['club'] },
+    { id:'shamiyana', name:'Shamiyana',          use:'Snacks on Day 1', pins:['shamiyana'] },
+    { id:'berms',     name:'E-6 and E-9 Berms',  use:'JCKIF and Hydrogen Valley, Day 1', pins:['e6','e9'] },
+    { id:'mess',      name:'Messes',             use:'Meals. Old Mess and New Mess are both marked', pins:['mess_old','mess_new'] },
+    { id:'sports',    name:'Sports Complex',     use:'Yoga and meditation, Days 2 and 3', pins:['sports'] },
+    { id:'gate',      name:'Security checkpost', use:'The checkpoint on the campus entrance road', pins:['gate'] }
+  ];
+  var LANDMARKS = [['library','Library'], ['lhc','Lecture Hall Complex'], ['admin','Administration']];
+  var cmPins = $('cmPins'), cmList = $('cmList');
+  LANDMARKS.forEach(function(l){
+    var p = CP[l[0]]; if(!p) return;
+    var t = el('text', { x:p[0], y:p[1], 'class':'cm-lm', 'text-anchor':'middle' }, cmPins); t.textContent = l[1];
+  });
+  PLACES.forEach(function(pl, n){
+    pl.n = n + 1;
+    pl.pins.forEach(function(k, j){
+      var p = CP[k]; if(!p) return;
+      var g = el('g', { 'class':'cm-pin', 'data-place':pl.id, tabindex:'-1' }, cmPins);
+      el('circle', { cx:p[0], cy:p[1], r:26, 'class':'halo' }, g);
+      el('circle', { cx:p[0], cy:p[1], r:15, 'class':'dot' }, g);
+      var num = el('text', { x:p[0], y:p[1] + 5.5, 'text-anchor':'middle', 'class':'num' }, g); num.textContent = pl.n;
+      if(j === 0 || pl.id === 'mess'){
+        var lab = el('text', { x:p[0] + 22, y:p[1] + 6, 'class':'cm-lab' }, g);
+        lab.textContent = pl.id === 'mess' ? (k === 'mess_old' ? 'Old Mess' : 'New Mess') : pl.name;
+      }
+    });
+    var li = document.createElement('li');
+    var p0 = CP[pl.pins[0]];
+    li.innerHTML = '<button type="button" data-place="' + pl.id + '"><span class="n">' + pl.n + '</span><span class="t"><b>' + esc(pl.name) + '</b><span>' + esc(pl.use) + '</span></span></button>' +
+      '<a class="gm" href="' + MAPS(p0[2] + ',' + p0[3]) + '" target="_blank" rel="noopener">Google Maps</a>';
+    cmList.appendChild(li);
+  });
+  function el(tag, attrs, parent){ var e = document.createElementNS('http://www.w3.org/2000/svg', tag); for(var k in attrs) e.setAttribute(k, attrs[k]); if(parent) parent.appendChild(e); return e; }
+  function selectPlace(id){
+    cmPins.querySelectorAll('.cm-pin').forEach(function(g){ g.classList.toggle('on', g.dataset.place === id); });
+    cmList.querySelectorAll('button[data-place]').forEach(function(b){ b.parentNode.classList.toggle('on', b.dataset.place === id); });
+    // bring selected pins to the front
+    cmPins.querySelectorAll('.cm-pin.on').forEach(function(g){ cmPins.appendChild(g); });
+  }
+  cmList.addEventListener('click', function(e){ var b = e.target.closest('button[data-place]'); if(b) selectPlace(b.dataset.place); });
+  cmPins.addEventListener('click', function(e){ var g = e.target.closest('.cm-pin'); if(g) selectPlace(g.dataset.place); });
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.campus-link'); if(!b) return;
+    selectPlace(b.dataset.pin);
+    $('campus').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'start' });
+  });
+  selectPlace('club');
+
+
+  jump.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    var t = $('day-' + b.dataset.day); if(t) t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'start' });
+  });
+
+  /* ------------------------------------------------------------------
+     Clouds — scattered sprites over the satellite image
+     Each has a home position (x,y as fraction of viewport), size, depth.
+     Depth drives how hard it rushes toward the viewer on scroll.
+     ------------------------------------------------------------------ */
+  var SPRITES = ['__C0__','__C1__','__C2__','__C3__'];
+  var BANK = '__BANK__';
+  var CLOUDS = [
+    /* scattered clouds sit mostly over the seas, Tibet and South-East Asia so the
+       first view shows all of India; they rush inward once scrolling starts */
+    { s:0, x:.08, y:.30, w:.30, d:1.0 }, { s:1, x:.62, y:.07, w:.34, d:.8 },
+    { s:2, x:.16, y:.68, w:.28, d:1.2 }, { s:3, x:.87, y:.62, w:.36, d:.9 },
+    { s:1, x:.05, y:.90, w:.24, d:1.1 }, { s:0, x:.60, y:.64, w:.16, d:1.4 },
+    { s:2, x:.93, y:.26, w:.24, d:1.3 }, { s:3, x:.13, y:.08, w:.24, d:.7 },
+    /* dense banks that start tiny and far, then swallow the screen */
+    { s:'b', x:.50, y:.48, w:.30, d:3.2, bank:true, from:.18 },
+    { s:'b', x:.30, y:.40, w:.26, d:2.8, bank:true, from:.22 },
+    { s:'b', x:.70, y:.56, w:.28, d:3.0, bank:true, from:.26 }
+  ];
+  var cloudsEl = $('clouds');
+  CLOUDS.forEach(function(c, i){
+    var img = new Image();
+    img.src = c.s === 'b' ? BANK : SPRITES[c.s];
+    img.alt = ''; img.className = 'cloud'; img.decoding = 'async';
+    img.style.opacity = c.bank ? '0' : '.95';
+    cloudsEl.appendChild(img);
+    c.el = img; c.drift = (i % 2 ? 1 : -1) * (6 + i * 1.5); // px per second, gentle
+  });
+
+  /* ------------------------------------------------------------------
+     Map geometry (projected in the build step; real coordinates)
+     ------------------------------------------------------------------ */
+  var G = [__GX__, __GY__], J = [__JX__, __JY__];
+  var KM = __KM__;
+  var route = $('mRoute'), routeLen = 0;
+
+  /* ------------------------------------------------------------------
+     Scroll engine — one rAF per scroll, progress per pinned section
+     ------------------------------------------------------------------ */
+  var sky = $('sky'), routeSec = $('route'), head = $('head');
+  var sat = $('sat'), veil = $('veil'), cap = $('orbitCap'), descend = $('descend'), card = $('titleCard');
+  var ticking = false, t0 = performance.now();
+
+  /* ------------------------------------------------------------------
+     Satellite framing — fit all of India (incl. islands) between the
+     header and the caption, centred, while the image still covers the
+     screen. Image extent: 38–128°E, 56°N–26°S (equirectangular).
+     ------------------------------------------------------------------ */
+  var SATG = { w:38, e:128, n:56, s:-26 };
+  var IND  = { w:68.1, e:97.4, n:37.1, s:6.6 };
+  var satS = 1;
+  function layoutSat(){
+    if(reduce) return;
+    var vw = window.innerWidth, vh = window.innerHeight, small = vw < 600;
+    var top = (head.offsetHeight || 62) + 10, bottom = vh - (small ? 176 : 126);
+    var mx = small ? 12 : vw * .06;
+    var s = Math.min((vw - 2*mx) / (IND.e - IND.w), Math.max(120, bottom - top) / (IND.n - IND.s));
+    s = Math.max(s, vw / (SATG.e - SATG.w), vh / (SATG.n - SATG.s));   // never leave an edge uncovered
+    var W = (SATG.e - SATG.w) * s, H = (SATG.n - SATG.s) * s;
+    var left = vw/2 - ((IND.w + IND.e)/2 - SATG.w) * s;
+    var tp = (top + bottom)/2 - (SATG.n - (IND.n + IND.s)/2) * s;
+    left = clamp(left, vw - W, 0); tp = clamp(tp, vh - H, 0);
+    sat.style.width = W.toFixed(1) + 'px'; sat.style.height = H.toFixed(1) + 'px';
+    sat.style.left = left.toFixed(1) + 'px'; sat.style.top = tp.toFixed(1) + 'px';
+    // the push-in heads for Jodhpur
+    sat.style.transformOrigin = ((73.02 - SATG.w) * s).toFixed(1) + 'px ' + ((SATG.n - 26.29) * s).toFixed(1) + 'px';
+    sat.classList.add('fitted'); satS = s;
+  }
+
+  /* ------------------------------------------------------------------
+     Royal frame around the title: a cusped (multifoil) Rajput arch sized
+     to the title, jaali screens in the side space, a toran below the
+     header and a block-print border at the foot. Rebuilt on resize.
+     ------------------------------------------------------------------ */
+  var royal = $('royal'), royalSvg = $('royalSvg'), royalLines = [], toranEl = royal.querySelector('.toran');
+  function bez(a, b, c, d, t){ var u = 1 - t; return u*u*u*a + 3*u*u*t*b + 3*u*t*t*c + t*t*t*d; }
+  function f1(v){ return v.toFixed(1); }
+  function drawRoyal(){
+    if(reduce) return;
+    var vw = window.innerWidth, vh = window.innerHeight, small = vw < 600;
+    var headH = head.offsetHeight || 62;
+    royal.style.setProperty('--head-h', headH + 'px');
+    var ttl = card.querySelector('.ys-title'), lg = card.querySelector('.logos'), pr = card.querySelector('.pair');
+    var contentW = Math.max(ttl.offsetWidth, lg.offsetWidth, pr.offsetWidth);
+    var cx = vw / 2;
+    var hw = Math.min(contentW/2 + (small ? 16 : 64), vw/2 - (small ? 10 : 26));
+    var xL = cx - hw, xR = cx + hw;
+    var toranBottom = headH + 44, bandH = small ? 22 : 28, bandTop = vh - bandH - (small ? 8 : 12);
+    // Springing line sits just above the Devanagari line, so the logos row is held
+    // inside the curved head of the arch. The arch rises as high as the toran allows,
+    // then widens if needed so the logos clear the cusps.
+    var dv = card.querySelector('.deva');
+    var lgTop = lg.offsetTop, lgHalf = lg.offsetWidth / 2;
+    var yS = (dv ? dv.offsetTop : ttl.offsetTop) - 6;
+    var rise = Math.max(40, Math.min(hw * 1.25, yS - toranBottom - 40));
+    var yA = yS - rise, yB = bandTop - 8;
+    // half-width of the pointed arch at height y (same cubic as below), by sampling
+    function halfAt(y, hwv, r){
+      var best = 0, yAv = yS - r;
+      for(var q = 0; q <= 60; q++){ var tq = q/60;
+        var px = bez(cx - hwv, cx - hwv, cx - hwv*.22, cx, tq), py = bez(yS, yS - r*.62, yAv + r*.18, yAv, tq);
+        if(py <= y){ best = cx - px; break; } }
+      return best;
+    }
+    var need = lgHalf + (small ? 16 : 26), cushion = small ? 14 : 20;
+    for(var grow = 0; grow < 40 && halfAt(lgTop - cushion, hw, rise) < need; grow++){
+      if(hw < vw/2 - (small ? 10 : 26)){ hw = Math.min(hw + 8, vw/2 - (small ? 10 : 26)); xL = cx - hw; xR = cx + hw; }
+      else break;
+    }
+    if(halfAt(lgTop - cushion, hw, rise) < need){          // still tight: fall back to springing above the logos
+      yS = lgTop - 10; rise = Math.max(40, Math.min(hw * 1.25, yS - toranBottom - 40)); yA = yS - rise;
+    }
+
+    // sample the pointed arch (two cubic halves) and split it into foils
+    var P = [], N = 90, i;
+    for(i = 0; i <= N; i++){ var t = i/N;
+      P.push([bez(xL, xL, cx - hw*.22, cx, t), bez(yS, yS - rise*.62, yA + rise*.18, yA, t)]); }
+    for(i = 1; i <= N; i++){ var t2 = i/N;
+      P.push([bez(cx, cx + hw*.22, xR, xR, t2), bez(yA, yA + rise*.18, yS - rise*.62, yS, t2)]); }
+    var L = [0]; for(i = 1; i < P.length; i++){ L.push(L[i-1] + Math.hypot(P[i][0]-P[i-1][0], P[i][1]-P[i-1][1])); }
+    var total = L[L.length-1], F = Math.round(total / (small ? 46 : 62)); if(F % 2 === 0) F++; F = clamp(F, 5, 13);
+    var ends = [], j = 0;
+    for(var k = 0; k <= F; k++){ var target = total * k / F; while(j < L.length - 1 && L[j+1] < target) j++; ends.push(P[Math.min(j+1, P.length-1)]); }
+    ends[0] = [xL, yS]; ends[F] = [xR, yS];
+    var foils = '';
+    for(k = 1; k <= F; k++){ var a = ends[k-1], b = ends[k], ch = Math.hypot(b[0]-a[0], b[1]-a[1]);
+      foils += ' A' + f1(ch*.58) + ',' + f1(ch*.58) + ' 0 0 0 ' + f1(b[0]) + ',' + f1(b[1]); }
+    var inner = 'M' + f1(xL) + ',' + f1(yB) + ' L' + f1(xL) + ',' + f1(yS) + foils + ' L' + f1(xR) + ',' + f1(yB);
+    var o = small ? 10 : 14, oxL = xL - o, oxR = xR + o, oyA = yA - o - 4, orise = yS - oyA;
+    var outer = 'M' + f1(oxL) + ',' + f1(yB) + ' L' + f1(oxL) + ',' + f1(yS) +
+      ' C' + f1(oxL) + ',' + f1(yS - orise*.62) + ' ' + f1(cx - (hw+o)*.22) + ',' + f1(oyA + orise*.18) + ' ' + f1(cx) + ',' + f1(oyA) +
+      ' C' + f1(cx + (hw+o)*.22) + ',' + f1(oyA + orise*.18) + ' ' + f1(oxR) + ',' + f1(yS - orise*.62) + ' ' + f1(oxR) + ',' + f1(yS) +
+      ' L' + f1(oxR) + ',' + f1(yB);
+
+    // pilaster jewels, capitals and bases
+    var jewels = '', gx1 = xL - o/2, gx2 = xR + o/2;
+    for(var y = yS + 30; y < yB - 14; y += 44){
+      jewels += 'M' + f1(gx1) + ',' + f1(y-4) + ' l3.2,4 -3.2,4 -3.2,-4Z M' + f1(gx2) + ',' + f1(y-4) + ' l3.2,4 -3.2,4 -3.2,-4Z ';
+    }
+    var caps = '';
+    [[xL, -1], [xR, 1]].forEach(function(q){ var x0 = q[0], sd = q[1];
+      caps += '<path d="M' + f1(x0 - sd*6) + ',' + f1(yS) + ' L' + f1(x0 + sd*(o+10)) + ',' + f1(yS) + '" stroke="#B98A2E" stroke-width="2.4"/>';
+      caps += '<path d="M' + f1(x0 - sd*6) + ',' + f1(yB) + ' L' + f1(x0 + sd*(o+10)) + ',' + f1(yB) + '" stroke="#B98A2E" stroke-width="2.4"/>';
+    });
+    // lotus-bud finial on the apex
+    var fin = '<path d="M' + f1(cx) + ',' + f1(oyA - 2) + ' c-8,-5 -9,-16 0,-24 c9,8 8,19 0,24Z" fill="#8B2D2D"/>' +
+              '<circle cx="' + f1(cx) + '" cy="' + f1(oyA - 30) + '" r="3.2" fill="#B98A2E"/>' +
+              '<path d="M' + f1(cx-14) + ',' + f1(oyA - 1) + ' q14,-7 28,0" fill="none" stroke="#B98A2E" stroke-width="1.6"/>';
+
+    // jaali screens in the side spaces
+    var jaali = '', space = oxL - 24 - 26;
+    if(!small && space >= 96 && yB - yS > 180){
+      var pw = Math.min(210, space - 12), pxs = [24 + (space - pw)/2, vw - 24 - (space - pw)/2 - pw];
+      pxs.forEach(function(x0){
+        var x1 = x0 + pw, xc = (x0 + x1)/2, yt = yS + 24, yb = yB - 6, pk = pw * .62;
+        var d = 'M' + f1(x0) + ',' + f1(yb) + ' L' + f1(x0) + ',' + f1(yt) + ' Q' + f1(x0) + ',' + f1(yt - pk*.7) + ' ' + f1(xc) + ',' + f1(yt - pk) +
+                ' Q' + f1(x1) + ',' + f1(yt - pk*.7) + ' ' + f1(x1) + ',' + f1(yt) + ' L' + f1(x1) + ',' + f1(yb) + 'Z';
+        jaali += '<path d="' + d + '" fill="url(#jaaliP)" opacity=".75"/><path d="' + d + '" fill="none" stroke="#B98A2E" stroke-width="1.6"/>';
+      });
+    }
+
+    royalSvg.setAttribute('viewBox', '0 0 ' + vw + ' ' + vh);
+    royalSvg.innerHTML =
+      '<defs>' +
+        '<radialGradient id="archGlow" cx="50%" cy="55%" r="65%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".7" stop-color="#FFFBF2"/><stop offset="1" stop-color="#FBEFD8"/></radialGradient>' +
+        '<pattern id="jaaliP" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M13,0 L26,13 L13,26 L0,13Z" fill="none" stroke="#B98A2E" stroke-width="1"/><rect x="6.5" y="6.5" width="13" height="13" fill="none" stroke="#B98A2E" stroke-width="1"/><circle cx="13" cy="13" r="1.8" fill="#B98A2E"/></pattern>' +
+        '<pattern id="butiP" width="30" height="' + bandH + '" patternUnits="userSpaceOnUse">' +
+          '<g transform="translate(15,' + (bandH/2) + ')"><ellipse rx="2.4" ry="' + (bandH*.24).toFixed(1) + '" fill="#8B2D2D"/><ellipse rx="' + (bandH*.24).toFixed(1) + '" ry="2.4" fill="#8B2D2D"/><circle r="1.7" fill="#E0A33A"/></g>' +
+          '<circle cx="0" cy="' + (bandH/2) + '" r="1.5" fill="#B98A2E"/><circle cx="30" cy="' + (bandH/2) + '" r="1.5" fill="#B98A2E"/>' +
+        '</pattern>' +
+      '</defs>' +
+      '<path d="' + inner.replace('M' + f1(xL) + ',' + f1(yB), 'M' + f1(xL) + ',' + f1(yB)) + ' Z" fill="url(#archGlow)"/>' +
+      jaali +
+      '<path class="arch-line" pathLength="1" d="' + outer + '" stroke-width="1.4"/>' +
+      '<path class="arch-line" pathLength="1" d="' + inner + '" stroke-width="2.2"/>' +
+      '<path d="' + jewels + '" fill="#B98A2E"/>' + caps + fin +
+      '<rect x="0" y="' + f1(bandTop) + '" width="' + vw + '" height="' + bandH + '" fill="#FFF8EA"/>' +
+      '<rect x="0" y="' + f1(bandTop) + '" width="' + vw + '" height="' + bandH + '" fill="url(#butiP)"/>' +
+      '<path d="M0,' + f1(bandTop) + ' H' + vw + ' M0,' + f1(bandTop + bandH) + ' H' + vw + '" stroke="#B98A2E" stroke-width="1.6"/>';
+    royalLines = Array.prototype.slice.call(royalSvg.querySelectorAll('.arch-line'));
+  }
+  function relayout(){ layoutSat(); drawRoyal(); onScroll(); }
+
+  function progressOf(sec){
+    var r = sec.getBoundingClientRect(), total = r.height - window.innerHeight;
+    return total > 0 ? clamp(-r.top / total, 0, 1) : (r.top < 0 ? 1 : 0);
+  }
+
+  function renderSky(p, now){
+    var vw = window.innerWidth, vh = window.innerHeight;
+    // 1) satellite: slow push-in, slight blur as clouds thicken
+    var zoom = 1 + ease(seg(p, 0, .6)) * .55;
+    sat.style.transform = 'scale(' + zoom.toFixed(4) + ')';
+    sat.style.filter = 'blur(' + (seg(p,.25,.55) * 6).toFixed(2) + 'px)';
+    // 2) clouds: drift with time; on scroll, fly outward from centre and grow
+    var rush = ease(seg(p, .05, .55));
+    CLOUDS.forEach(function(c){
+      var w = c.w * vw;
+      var baseX = c.x * vw - w/2 + ((now - t0) / 1000 * c.drift) % (vw * .3);
+      var baseY = c.y * vh - w*0.3;
+      var cx = baseX + w/2 - vw/2, cy = baseY + w*0.3 - vh/2;
+      var sc, op;
+      if(c.bank){
+        var b = ease(seg(p, c.from, .6));
+        sc = .4 + b * c.d * 3.2;
+        op = seg(p, c.from, c.from + .12);
+      } else {
+        sc = 1 + rush * c.d * 2.2;
+        op = .95 * (1 - seg(p, .45, .62) * .2);
+      }
+      var tx = baseX + cx * (sc - 1) * .6, ty = baseY + cy * (sc - 1) * .6;
+      c.el.style.width = w + 'px';
+      c.el.style.transform = 'translate3d(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px,0) scale(' + sc.toFixed(3) + ')';
+      c.el.style.opacity = op.toFixed(3);
+    });
+    // 3) whiteout
+    veil.style.opacity = ease(seg(p, .34, .58)).toFixed(3);
+    // 4) captions out, title card in
+    var capOut = 1 - seg(p, .02, .14);
+    cap.style.opacity = capOut; descend.style.opacity = capOut;
+    var tIn = ease(seg(p, .56, .7));
+    card.style.opacity = tIn.toFixed(3);
+    card.style.transform = 'translateY(' + ((1 - tIn) * 24).toFixed(1) + 'px) scale(' + (0.97 + tIn * .03).toFixed(4) + ')';
+    card.classList.toggle('live', tIn > .5);
+    // royal frame arrives with the title: arch lines draw in, toran drops
+    royal.style.opacity = tIn.toFixed(3);
+    var draw = ease(seg(p, .56, .76));
+    for(var ri = 0; ri < royalLines.length; ri++){ royalLines[ri].style.strokeDashoffset = (1 - draw).toFixed(4); }
+    toranEl.style.transform = 'translateY(' + (-14 - (1 - tIn) * 26).toFixed(1) + 'px)';
+    // header colour: white over the satellite, ink once the screen is white
+    return p > .3;
+  }
+
+  function renderRoute(p){
+    var draw = ease(seg(p, 0, .26));
+    var mi = $('mIndia');
+    mi.style.strokeDashoffset = (1 - draw).toFixed(4);
+    mi.style.fillOpacity = (seg(p, .18, .32)).toFixed(3);
+    var states = seg(p, .24, .36);
+    $('mSik').style.opacity = states; $('mRaj').style.opacity = (states * .85).toFixed(3);
+    var pins = seg(p, .32, .42);
+    ['pinG','pinJ'].forEach(function(id){ var el = $(id); el.style.opacity = pins; el.style.transform = 'scale(' + (0.4 + pins*.6).toFixed(3) + ')'; });
+    $('lblG').style.opacity = seg(p, .36, .44); $('lblJ').style.opacity = seg(p, .36, .44);
+    var arc = ease(seg(p, .42, .74));
+    route.style.strokeDashoffset = (1 - arc).toFixed(4);
+    $('mRouteShadow').style.opacity = seg(p, .42, .5) * .9;
+    var trav = $('trav');
+    if(routeLen){
+      var pt = route.getPointAtLength(routeLen * arc);
+      trav.setAttribute('cx', pt.x.toFixed(1)); trav.setAttribute('cy', pt.y.toFixed(1));
+    }
+    trav.style.opacity = (arc > 0 && arc < 1) ? 1 : 0;
+    $('rcK').style.opacity = seg(p, .05, .16);
+    $('rcH').style.opacity = seg(p, .5, .62);
+    $('rcP').style.opacity = seg(p, .6, .7);
+    $('rcD').style.opacity = seg(p, .66, .74);
+    $('kmCount').textContent = Math.round(KM * ease(seg(p, .66, .86))).toLocaleString('en-IN') + ' km';
+  }
+
+  function frame(){
+    ticking = false;
+    if(!$('view-home').classList.contains('active')){ head.classList.add('on-light'); return; }
+    var now = performance.now();
+    // reduced motion: leave the satellite band and title static (CSS lays them out)
+    var lightByTitle = reduce ? false : renderSky(progressOf(sky), now);
+    renderRoute(reduce ? 1 : progressOf(routeSec));
+    head.classList.toggle('on-light', lightByTitle || sky.getBoundingClientRect().bottom < 60);
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  var rzT; window.addEventListener('resize', function(){ clearTimeout(rzT); rzT = setTimeout(relayout, 60); onScroll(); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ drawRoyal(); onScroll(); });
+  // keep clouds drifting even while the page is still
+  (function idle(){ if(!reduce && $('view-home').classList.contains('active') && progressOf(sky) < .7){ onScroll(); } setTimeout(function(){ requestAnimationFrame(idle); }, 60); })();
+
+  /* ------------------------------------------------------------------
+     Loader — progress reflects real asset loading (image decode + fonts),
+     eased so the counter never jumps; minimum on-screen time for the trace.
+     ------------------------------------------------------------------ */
+  var loader = $('loader'), ldTrace = $('ldTrace'), ldCount = $('ldCount'), ldLabel = $('ldLabel'), ldFill = $('ldFill'), ldDots = $('ldDots');
+  function decode(src){ var i = new Image(); i.src = src; return (i.decode ? i.decode() : Promise.resolve()).catch(function(){}); }
+  var satSrc = (getComputedStyle(sat).backgroundImage.match(/url\(["']?(.*?)["']?\)$/) || [])[1] || '';
+  var assetJobs = [decode(satSrc)].concat(SPRITES.map(decode), [decode(BANK)]);
+  if(document.fonts && document.fonts.ready) assetJobs.push(document.fonts.ready.catch(function(){}));
+
+  function runLoader(opts){
+    // opts.jobs: promises to wait for; opts.min: minimum ms; opts.labels: stage captions
+    return new Promise(function(resolve){
+      var jobs = opts.jobs || [], doneJobs = 0, start = performance.now(), shown = 0;
+      jobs.forEach(function(j){ Promise.resolve(j).then(function(){ doneJobs++; }); });
+      // appear instantly (no fade-in), fade out normally when finished
+      loader.style.transition = 'none'; loader.classList.remove('done'); void loader.offsetWidth; loader.style.transition = '';
+      ldFill.style.opacity = 0; ldDots.classList.remove('on'); ldTrace.style.strokeDashoffset = 1; ldCount.textContent = '000';
+      (function tick(){
+        var real = jobs.length ? doneJobs / jobs.length : 1;
+        var timeCap = clamp((performance.now() - start) / opts.min, 0, 1);
+        var target = Math.min(real, timeCap);
+        shown += (target - shown) * .12;
+        if(target === 1 && shown > .995) shown = 1;
+        ldTrace.style.strokeDashoffset = (1 - shown).toFixed(4);
+        ldCount.textContent = String(Math.round(shown * 100)).padStart(3, '0');
+        var li = Math.min(opts.labels.length - 1, Math.floor(shown * opts.labels.length));
+        ldLabel.textContent = opts.labels[li];
+        if(shown > .7) ldDots.classList.add('on');
+        if(shown >= 1){
+          ldFill.style.opacity = 1;
+          setTimeout(function(){ loader.classList.add('done'); resolve(); }, 380);
+          return;
+        }
+        requestAnimationFrame(tick);
+      })();
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     Router — #home (default), #schedule, #schedule/<dayId>
+     ------------------------------------------------------------------ */
+  var firstLoad = true;
+  function route_(){
+    var h = location.hash || '#home';
+    var isSched = h.indexOf('#schedule') === 0;
+    var dayId = isSched ? h.split('/')[1] : null;
+    var prevSched = $('view-schedule').classList.contains('active');
+    var switching = firstLoad || (isSched !== prevSched);
+
+    function show(){
+      $('view-home').classList.toggle('active', !isSched);
+      $('view-schedule').classList.toggle('active', isSched);
+      $('headCta').textContent = isSched ? 'Home' : 'Schedule';
+      $('headCta').setAttribute('href', isSched ? '#home' : '#schedule');
+      if(switching) window.scrollTo(0, 0);
+      if(isSched && dayId){ var t = $('day-' + dayId) || $(dayId); if(t) setTimeout(function(){ t.scrollIntoView({ block:'start' }); }, 30); }
+      document.title = isSched ? 'Schedule · Yuva Sangam Phase 7' : 'Yuva Sangam Phase 7 · Sikkim × Rajasthan · IIT Jodhpur';
+      if(!routeLen) routeLen = route.getTotalLength();
+      if(!isSched) relayout(); else onScroll();
+      if(isSched){ curWin = -1; winRows = []; buildMinis(); setTimeout(pickWin, 40); }
+    }
+
+    if(firstLoad){
+      firstLoad = false;
+      show();
+      runLoader({ jobs: assetJobs, min: reduce ? 300 : 1900,
+        labels: isSched ? ['Tracing the map','Plotting Sikkim','Plotting Rajasthan','Setting out the week']
+                        : ['Tracing the map','Fetching the satellite view','Gathering clouds','Ready'] });
+    } else if(switching && isSched){
+      runLoader({ jobs: [], min: reduce ? 200 : 1300,
+        labels: ['Tracing the map','Plotting Sikkim','Plotting Rajasthan','Setting out the week'] });
+      setTimeout(show, 60);
+    } else {
+      show();
+    }
+  }
+  window.addEventListener('hashchange', route_);
+
+  // in-page scroll links on the home view (keep the router on #home)
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[data-scroll]'); if(!a) return;
+    e.preventDefault();
+    if(location.hash.indexOf('#schedule') === 0){ location.hash = '#home'; }
+    setTimeout(function(){ var t = $(a.dataset.scroll); if(t) t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'start' }); }, 80);
+  });
+
+  // highlight the current day chip on the schedule page
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(ents){
+      ents.forEach(function(en){ if(en.isIntersecting){
+        var id = en.target.id.replace('day-','');
+        jump.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.day === id); });
+      }});
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    document.querySelectorAll('.day').forEach(function(s){ io.observe(s); });
+  }
+
+  route_();
+})();
+</script>
+
+<script>
+(function(){
+  "use strict";
+
+  var button = document.getElementById("soundToggle");
+  if(!button) return;
+
+  /*
+    The browser may block audible autoplay until a real user gesture.
+    The first user interaction attempts to start the ambient track.
+    The button is always a reliable explicit on/off control.
+  */
+  var ambient = new Audio("audio/ambient.mp3");
+  ambient.loop = true;
+  ambient.preload = "auto";
+  ambient.volume = 0.18;
+
+  var soundOn = false;
+  var userMuted = false;
+  var playPending = false;
+
+  function updateButton(){
+    button.classList.toggle("is-on", soundOn);
+    button.setAttribute("aria-pressed", soundOn ? "true" : "false");
+    button.setAttribute(
+      "aria-label",
+      soundOn ? "Turn sound off" : "Turn sound on"
+    );
+    button.setAttribute(
+      "title",
+      soundOn ? "Turn sound off" : "Turn sound on"
+    );
+  }
+
+  async function startAmbient(){
+    if(userMuted || soundOn || playPending) return;
+
+    playPending = true;
+
+    try{
+      await ambient.play();
+      soundOn = true;
+      updateButton();
+    }catch(err){
+      /*
+        Autoplay can be denied by the browser. Nothing is broken here.
+        The next explicit interaction, or the speaker button, will retry.
+      */
+      soundOn = false;
+      updateButton();
+    }finally{
+      playPending = false;
+    }
+  }
+
+  function stopAmbient(manual){
+    ambient.pause();
+
+    /*
+      Do not reset currentTime. Turning the sound back on resumes
+      from the same point rather than starting the track again.
+    */
+    soundOn = false;
+
+    if(manual){
+      userMuted = true;
+    }
+
+    updateButton();
+  }
+
+  button.addEventListener("click", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+
+    if(soundOn){
+      stopAmbient(true);
+    }else{
+      userMuted = false;
+      startAmbient();
+    }
+  });
+
+  function firstInteraction(e){
+    /*
+      Clicking the speaker should only invoke its explicit toggle.
+    */
+    if(
+      e &&
+      e.target &&
+      e.target.closest &&
+      e.target.closest("#soundToggle")
+    ){
+      return;
+    }
+
+    if(!soundOn && !userMuted){
+      startAmbient();
+    }
+  }
+
+  /*
+    Multiple gesture types are intentional. Browser autoplay rules
+    differ slightly, and this gives the site the best chance of
+    starting naturally on the user's first interaction.
+  */
+  window.addEventListener("pointerdown", firstInteraction, {passive:true});
+  window.addEventListener("touchstart", firstInteraction, {passive:true});
+  window.addEventListener("wheel", firstInteraction, {passive:true});
+  window.addEventListener("keydown", firstInteraction, {passive:true});
+
+  ambient.addEventListener("play", function(){
+    soundOn = true;
+    updateButton();
+  });
+
+  ambient.addEventListener("pause", function(){
+    if(!ambient.ended && !userMuted){
+      soundOn = false;
+      updateButton();
+    }
+  });
+
+  ambient.addEventListener("ended", function(){
+    soundOn = false;
+    updateButton();
+  });
+
+  updateButton();
+
+})();
+</script>
+
+</body>
+</html>
